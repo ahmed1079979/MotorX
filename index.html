@@ -11,221 +11,126 @@
 body {
   margin: 0;
   font-family: 'Cairo', sans-serif;
-  background: linear-gradient(180deg, #0a0a0a, #000);
+  background: #0d0d0d;
   color: white;
+}
+
+/* Header */
+.header {
+  padding: 15px;
   text-align: center;
+  font-size: 20px;
+  font-weight: bold;
 }
 
-.logo {
-  width: 110px;
-  margin-top: 20px;
-}
-
+/* Cards */
 .card {
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(10px);
+  background: #1a1a1a;
   margin: 15px;
-  padding: 20px;
-  border-radius: 18px;
+  padding: 15px;
+  border-radius: 15px;
 }
 
+/* Button */
 .btn {
-  background: linear-gradient(45deg, red, orange);
+  background: #ff3b3b;
   padding: 12px;
-  border-radius: 12px;
+  border-radius: 10px;
+  text-align: center;
   margin-top: 10px;
-  cursor: pointer;
 }
 
+/* Inputs */
 input {
   width: 90%;
   padding: 12px;
   margin: 8px;
   border-radius: 10px;
   border: none;
+  background: #222;
+  color: white;
+}
+
+/* Bottom Nav */
+.nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #111;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.nav div {
+  cursor: pointer;
+}
+
+/* Hide */
+.page {
+  display: none;
+}
+
+.active {
+  display: block;
 }
 </style>
+
 </head>
 
 <body>
 
-<img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png" class="logo">
+<div class="header">🚗 MotorX</div>
 
-<!-- 🔐 تسجيل -->
-<div id="auth">
+<!-- الصفحات -->
 
-  <div class="card">
-    <h3>🔐 تسجيل دخول</h3>
-    <input id="loginUser" placeholder="اسم المستخدم">
-    <input id="loginPass" type="password" placeholder="كلمة المرور">
-    <div class="btn" onclick="login()">دخول</div>
-  </div>
-
-  <div class="card">
-    <h3>🆕 إنشاء حساب</h3>
-    <input id="regUser" placeholder="اسم المستخدم">
-    <input id="regPass" type="password" placeholder="كلمة المرور">
-    <div class="btn" onclick="register()">تسجيل</div>
-  </div>
-
-</div>
-
-<!-- 🚀 التطبيق -->
-<div id="app" style="display:none;">
-
-  <div class="btn" onclick="logout()">🚪 تسجيل خروج</div>
-
-  <!-- 🏪 إضافة محل -->
-  <div class="card">
-    <h3>🏪 محلاتي</h3>
-    <input id="shopName" placeholder="اسم المحل">
-    <input id="shopService" placeholder="الخدمة">
-    <input id="shopPrice" placeholder="السعر">
-    <div class="btn" onclick="addShop()">إضافة محل</div>
-    <div id="myShops"></div>
-  </div>
-
-  <!-- ⭐ تقييم -->
-  <div class="card">
-    <h3>⭐ تقييم المحلات</h3>
-    <input id="rateShopName" placeholder="اسم المحل">
-    <input id="rateValue" placeholder="من 5">
-    <div class="btn" onclick="rateShop()">إرسال</div>
-  </div>
-
-  <!-- 🚗 طلب -->
+<div id="home" class="page active">
   <div class="card">
     <h3>🚗 طلب خدمة</h3>
-    <input id="orderService" placeholder="نوع الخدمة">
-    <div class="btn" onclick="makeOrder()">اطلب</div>
+    <input placeholder="وش تحتاج؟">
+    <div class="btn">اطلب الآن</div>
   </div>
+</div>
 
-  <!-- 📊 لوحة التحكم -->
+<div id="shops" class="page">
+  <div class="card">
+    <h3>🏪 محلاتي</h3>
+    <input placeholder="اسم المحل">
+    <input placeholder="الخدمة">
+    <input placeholder="السعر">
+    <div class="btn">إضافة</div>
+  </div>
+</div>
+
+<div id="rate" class="page">
+  <div class="card">
+    <h3>⭐ تقييم</h3>
+    <input placeholder="اسم المحل">
+    <input placeholder="التقييم">
+    <div class="btn">إرسال</div>
+  </div>
+</div>
+
+<div id="orders" class="page">
   <div class="card">
     <h3>📊 الطلبات</h3>
-    <div id="orders"></div>
+    <p>مافي طلبات حالياً</p>
   </div>
+</div>
 
+<!-- Navigation -->
+<div class="nav">
+  <div onclick="show('home')">🏠</div>
+  <div onclick="show('shops')">🏪</div>
+  <div onclick="show('rate')">⭐</div>
+  <div onclick="show('orders')">📊</div>
 </div>
 
 <script>
-
-// تسجيل
-function register(){
-  let user = regUser.value;
-  let pass = regPass.value;
-
-  if(localStorage.getItem(user)){
-    alert("⚠️ موجود");
-    return;
-  }
-
-  localStorage.setItem(user, pass);
-  alert("✅ تم");
+function show(page){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
 }
-
-// دخول
-function login(){
-  let user = loginUser.value;
-  let pass = loginPass.value;
-
-  if(localStorage.getItem(user) === pass){
-    localStorage.setItem("currentUser", user);
-    showApp();
-  } else alert("❌ خطأ");
-}
-
-// خروج
-function logout(){
-  localStorage.removeItem("currentUser");
-  location.reload();
-}
-
-function showApp(){
-  auth.style.display = "none";
-  app.style.display = "block";
-  displayMyShops();
-  displayOrders();
-}
-
-if(localStorage.getItem("currentUser")) showApp();
-
-// 🏪 إضافة محل (مربوط بالمستخدم)
-function addShop(){
-  let shops = JSON.parse(localStorage.getItem("shops")||"[]");
-
-  let newShop = {
-    name: shopName.value,
-    service: shopService.value,
-    price: shopPrice.value,
-    owner: localStorage.getItem("currentUser"),
-    rating: 0
-  };
-
-  shops.push(newShop);
-  localStorage.setItem("shops", JSON.stringify(shops));
-
-  displayMyShops();
-}
-
-// عرض محلاتي فقط
-function displayMyShops(){
-  let user = localStorage.getItem("currentUser");
-  let shops = JSON.parse(localStorage.getItem("shops")||"[]");
-
-  let html = "";
-
-  shops.filter(s => s.owner === user).forEach(s => {
-    html += `<div class="card">
-      ${s.name} - ${s.service} - 💰${s.price}
-      ⭐ ${s.rating}
-    </div>`;
-  });
-
-  myShops.innerHTML = html;
-}
-
-// ⭐ تقييم
-function rateShop(){
-  let shops = JSON.parse(localStorage.getItem("shops")||"[]");
-
-  shops.forEach(s=>{
-    if(s.name === rateShopName.value){
-      s.rating = rateValue.value;
-    }
-  });
-
-  localStorage.setItem("shops", JSON.stringify(shops));
-  displayMyShops();
-}
-
-// 🚗 طلب خدمة
-function makeOrder(){
-  let orders = JSON.parse(localStorage.getItem("orders")||"[]");
-
-  orders.push({
-    user: localStorage.getItem("currentUser"),
-    service: orderService.value
-  });
-
-  localStorage.setItem("orders", JSON.stringify(orders));
-  displayOrders();
-}
-
-// 📊 عرض الطلبات
-function displayOrders(){
-  let orders = JSON.parse(localStorage.getItem("orders")||"[]");
-
-  let html = "";
-  orders.forEach(o=>{
-    html += `<div class="card">
-      👤 ${o.user} - 🔧 ${o.service}
-    </div>`;
-  });
-
-  document.getElementById("orders").innerHTML = html;
-}
-
 </script>
 
 </body>
