@@ -1,80 +1,90 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-  <meta charset="UTF-8">
-  <title>MotorX</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: linear-gradient(135deg, #000000, #1a1a1a);
-      color: white;
-      text-align: center;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MotorX</title>
 
-    h1 {
-      margin-top: 20px;
-      font-size: 32px;
-      letter-spacing: 2px;
-    }
+<style>
+body {
+  background: #0b0b0b;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+}
 
-    .btn {
-      display: block;
-      margin: 15px auto;
-      padding: 20px;
-      width: 80%;
-      max-width: 300px;
-      background: #1f1f1f;
-      border-radius: 15px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
+h1 {
+  margin-top: 20px;
+}
 
-    .btn:hover {
-      background: #333;
-    }
+.btn {
+  background: #1c1c1c;
+  padding: 15px;
+  margin: 10px auto;
+  width: 80%;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    #map {
-      width: 100%;
-      height: 300px;
-      margin-top: 20px;
-    }
-  </style>
+.btn:hover {
+  background: #333;
+}
+
+input, select {
+  padding: 10px;
+  width: 80%;
+  margin: 5px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  background: #00c853;
+  color: white;
+  cursor: pointer;
+}
+</style>
+
 </head>
 <body>
 
 <h1>🚗 MotorX</h1>
+
+<!-- زر تسجيل محل -->
+<div class="btn" onclick="showRegister()">📋 تسجيل محل</div>
+
+<!-- فورم التسجيل -->
+<div id="registerBox" style="display:none;">
+  <input id="shopName" placeholder="اسم المحل"><br>
   
-<div class="btn" onclick="showRegister()">🏪 تسجيل محل</div>
-  <div id="registerBox" style="display:none; margin-top:20px;">
-
-  <input id="shopName" placeholder="اسم المحل"><br><br>
-
   <select id="shopService">
-    <option value="غسيل">🚿 غسيل</option>
+    <option value="غسيل">🧼 غسيل سيارة</option>
     <option value="صيانة">🔧 صيانة</option>
     <option value="طوارئ">🚨 طوارئ</option>
-    <div id="shopsList" style="margin-top:20px;"></div>
-  </select><br><br>
+  </select><br>
 
-  <input id="shopPhone" placeholder="رقم الواتساب"><br><br>
+  <input id="shopPhone" placeholder="رقم الواتساب"><br>
 
   <button onclick="saveShop()">💾 حفظ</button>
-
 </div>
+
+<!-- الأزرار -->
 <div class="btn" onclick="order('غسيل')">🧼 غسيل سيارة</div>
 <div class="btn" onclick="order('صيانة')">🔧 صيانة</div>
 <div class="btn" onclick="order('طوارئ')">🚨 طوارئ</div>
 
-<div id="map"></div>
+<!-- عرض المحلات -->
+<div id="shopsList"></div>
 
 <script>
 
+// 📍 موقع المستخدم
 let userLocation = null;
 
-// كود الموقع
 function getLocation() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition((position) => {
@@ -88,17 +98,56 @@ function getLocation() {
 
 window.onload = getLocation;
 
-// 👇 هنا تحط قائمة المحلات (المهم 🔥)
+
+// 🔥 قائمة المحلات الأساسية
 let shops = [
   { name: "غسيل سريع", service: "غسيل", phone: "971500000001" },
   { name: "كراج السرعة", service: "صيانة", phone: "971500000002" },
   { name: "بنشر الطوارئ", service: "طوارئ", phone: "971500000003" }
 ];
-  
+
+// تحميل المحلات من التخزين
 let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
 shops = shops.concat(savedShops);
-  
-// 👇 تحتها مباشرة دالة الطلب
+
+
+// 📋 اظهار الفورم
+function showRegister() {
+  let box = document.getElementById("registerBox");
+  box.style.display = box.style.display === "none" ? "block" : "none";
+}
+
+
+// 💾 حفظ محل
+function saveShop() {
+  let name = document.getElementById("shopName").value;
+  let service = document.getElementById("shopService").value;
+  let phone = document.getElementById("shopPhone").value;
+
+  if (!name || !phone) {
+    alert("❌ املأ كل البيانات");
+    return;
+  }
+
+  let newShop = { name, service, phone };
+
+  // حفظ
+  let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
+  savedShops.push(newShop);
+  localStorage.setItem("shops", JSON.stringify(savedShops));
+
+  // إضافة مباشرة
+  shops.push(newShop);
+
+  alert("✅ تم تسجيل المحل");
+
+  // تنظيف
+  document.getElementById("shopName").value = "";
+  document.getElementById("shopPhone").value = "";
+}
+
+
+// 📦 عرض المحلات
 function order(service) {
   let list = shops.filter(s => s.service === service);
 
@@ -117,7 +166,8 @@ function order(service) {
     btn.style.background = "#222";
     btn.style.color = "white";
     btn.style.padding = "10px";
-    btn.style.margin = "10px 0";
+    btn.style.margin = "10px auto";
+    btn.style.width = "80%";
     btn.style.borderRadius = "10px";
     btn.style.cursor = "pointer";
 
@@ -127,7 +177,9 @@ function order(service) {
   });
 }
 
-  function sendWhatsApp(shop, service) {
+
+// 📲 واتساب
+function sendWhatsApp(shop, service) {
   let locationText = userLocation
     ? `📍 https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}`
     : "📍 الموقع غير متوفر";
@@ -140,66 +192,9 @@ ${locationText}`;
 
   window.open(url, "_blank");
 }
-  
-  list.forEach(shop => {
-    let btn = document.createElement("div");
 
-    btn.innerText = "🏪 " + shop.name;
-    btn.style.background = "#222";
-    btn.style.color = "white";
-    btn.style.padding = "10px";
-    btn.style.margin = "10px 0";
-    btn.style.borderRadius = "10px";
-    btn.style.cursor = "pointer";
-
-    btn.onclick = () => sendToWhatsApp(shop, service);
-
-    container.appendChild(btn);
-  });
-}
-
-  function initMap() {
-    var location = { lat: 24.4539, lng: 54.3773 };
-
-    var map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 13,
-      center: location,
-    });
-
-    new google.maps.Marker({
-      position: location,
-      map: map,
-    });
-  }
-
-  function showRegister() {
-  document.getElementById("registerBox").style.display = "block";
-}
-
-// تحميل المحلات من التخزين
-function saveShop() {
-  let name = document.getElementById("shopName").value;
-  let service = document.getElementById("shopService").value;
-  let phone = document.getElementById("shopPhone").value;
-
-  let newShop = { name, service, phone };
-
-  // نحفظ في localStorage
-  let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
-  savedShops.push(newShop);
-  localStorage.setItem("shops", JSON.stringify(savedShops));
-
-  // 🔥 نضيفه مباشرة للقائمة بدون تحديث الصفحة
-  shops.push(newShop);
-
-  alert("✅ تم تسجيل المحل!");
-
-  // تنظيف الفورم
-  document.getElementById("shopName").value = "";
-  document.getElementById("shopPhone").value = "";
-}
-  
 </script>
+
 
 <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcx2dw0Y-2EXMKpgyCiLe0uPkitOh9rT4&callback=initMap"></script>
 
