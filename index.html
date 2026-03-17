@@ -1,32 +1,30 @@
 
-# تطبيق خدمات السيارات المتكامل - CarService Pro
+# نظام CarService UAE - نظام حقيقي للإمارات فقط
 
-car_service_app = '''<!DOCTYPE html>
+carservice_uae = '''<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CarService Pro - خدمات السيارات المتنقلة</title>
+<title>CarService UAE - خدمات السيارات في الإمارات</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
 <style>
 :root {
-  --primary: #2563EB;
-  --primary-dark: #1D4ED8;
-  --secondary: #F59E0B;
-  --success: #10B981;
-  --danger: #EF4444;
+  --uae-red: #CE1126;
+  --uae-green: #00732F;
+  --uae-black: #000000;
+  --uae-white: #FFFFFF;
+  --gold: #C5A059;
+  --primary: #1E3A8A;
   --dark: #0F172A;
   --dark-light: #1E293B;
   --gray: #64748B;
-  --light: #F1F5F9;
-  --white: #FFFFFF;
-  --gradient-primary: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-  --gradient-secondary: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-  --shadow: 0 10px 40px rgba(0,0,0,0.3);
-  --shadow-lg: 0 25px 50px rgba(0,0,0,0.4);
+  --success: #059669;
+  --warning: #D97706;
+  --danger: #DC2626;
 }
 
 * {
@@ -38,44 +36,23 @@ car_service_app = '''<!DOCTYPE html>
 
 body {
   background: var(--dark);
-  color: var(--white);
+  color: var(--uae-white);
   min-height: 100vh;
-  overflow-x: hidden;
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes slideIn {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
-}
-
-@keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-}
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -1000px 0; }
-  100% { background-position: 1000px 0; }
+/* UAE Flag Colors Header */
+.uae-header {
+  height: 4px;
+  background: linear-gradient(90deg, var(--uae-red) 25%, var(--uae-green) 25%, var(--uae-green) 50%, var(--uae-white) 50%, var(--uae-white) 75%, var(--uae-black) 75%);
 }
 
 /* App Container */
 .app-container {
   max-width: 480px;
   margin: 0 auto;
+  background: var(--dark);
   min-height: 100vh;
   position: relative;
-  background: var(--dark);
 }
 
 /* Splash Screen */
@@ -85,7 +62,7 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--dark) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -100,36 +77,53 @@ body {
 }
 
 .splash-logo {
+  width: 150px;
+  height: 150px;
+  background: var(--uae-white);
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 80px;
-  animation: float 3s ease-in-out infinite;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+  animation: pulse 2s infinite;
 }
 
 .splash-title {
-  font-size: 32px;
+  font-size: 36px;
   font-weight: 900;
   margin-bottom: 10px;
+  color: var(--uae-white);
 }
 
 .splash-subtitle {
   font-size: 16px;
-  opacity: 0.9;
+  color: var(--gold);
+  margin-bottom: 5px;
+}
+
+.splash-location {
+  font-size: 14px;
+  color: var(--gray);
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .loading-bar {
   width: 200px;
   height: 4px;
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.2);
   border-radius: 2px;
-  margin-top: 30px;
+  margin-top: 40px;
   overflow: hidden;
 }
 
 .loading-progress {
   height: 100%;
   width: 0%;
-  background: var(--white);
-  border-radius: 2px;
+  background: var(--gold);
   animation: loading 2s ease-in-out forwards;
 }
 
@@ -138,11 +132,16 @@ body {
   100% { width: 100%; }
 }
 
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
 /* Auth Screens */
 .auth-screen {
   display: none;
   min-height: 100vh;
-  padding: 40px 30px;
+  padding: 30px 25px;
   animation: fadeIn 0.5s;
 }
 
@@ -150,22 +149,28 @@ body {
   display: block;
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .auth-header {
   text-align: center;
   margin-bottom: 40px;
+  padding-top: 20px;
 }
 
-.auth-icon {
+.auth-logo {
   width: 100px;
   height: 100px;
-  background: var(--gradient-primary);
-  border-radius: 30px;
+  background: linear-gradient(135deg, var(--primary), var(--uae-red));
+  border-radius: 25px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 50px;
-  margin: 0 auto 20px;
-  box-shadow: var(--shadow);
+  margin: 0 auto 25px;
+  box-shadow: 0 15px 40px rgba(30,58,138,0.4);
 }
 
 .auth-title {
@@ -176,7 +181,7 @@ body {
 
 .auth-subtitle {
   color: var(--gray);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 /* Form Styles */
@@ -189,6 +194,7 @@ body {
   margin-bottom: 8px;
   font-size: 14px;
   font-weight: 600;
+  color: var(--uae-white);
 }
 
 .form-input {
@@ -196,8 +202,8 @@ body {
   padding: 16px 20px;
   background: var(--dark-light);
   border: 2px solid transparent;
-  border-radius: 16px;
-  color: var(--white);
+  border-radius: 12px;
+  color: var(--uae-white);
   font-size: 16px;
   transition: all 0.3s;
 }
@@ -205,35 +211,25 @@ body {
 .form-input:focus {
   outline: none;
   border-color: var(--primary);
-  background: rgba(37, 99, 235, 0.1);
+  background: rgba(30,58,138,0.1);
 }
 
 .form-input::placeholder {
   color: var(--gray);
 }
 
-.input-icon {
-  position: relative;
-}
-
-.input-icon i {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
+.input-hint {
+  font-size: 12px;
   color: var(--gray);
-}
-
-.input-icon .form-input {
-  padding-right: 50px;
+  margin-top: 5px;
 }
 
 /* Buttons */
 .btn {
   width: 100%;
-  padding: 18px;
+  padding: 16px;
   border: none;
-  border-radius: 16px;
+  border-radius: 12px;
   font-size: 16px;
   font-weight: 700;
   cursor: pointer;
@@ -245,48 +241,25 @@ body {
 }
 
 .btn-primary {
-  background: var(--gradient-primary);
-  color: var(--white);
-  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.4);
+  background: linear-gradient(135deg, var(--primary), var(--uae-red));
+  color: var(--uae-white);
+  box-shadow: 0 10px 30px rgba(30,58,138,0.4);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 15px 40px rgba(37, 99, 235, 0.5);
-}
-
-.btn-secondary {
-  background: var(--dark-light);
-  color: var(--white);
-  border: 2px solid var(--gray);
-}
-
-.btn-secondary:hover {
-  border-color: var(--primary);
-  color: var(--primary);
+  box-shadow: 0 15px 40px rgba(30,58,138,0.5);
 }
 
 .btn-success {
   background: var(--success);
-  color: var(--white);
+  color: var(--uae-white);
 }
 
-.btn-danger {
-  background: var(--danger);
-  color: var(--white);
-}
-
-/* Toggle Auth */
-.auth-toggle {
-  text-align: center;
-  margin-top: 25px;
-  color: var(--gray);
-}
-
-.auth-toggle span {
-  color: var(--primary);
-  cursor: pointer;
-  font-weight: 700;
+.btn-uae {
+  background: linear-gradient(90deg, var(--uae-red), var(--uae-green), var(--uae-black));
+  color: var(--uae-white);
+  font-weight: 800;
 }
 
 /* Role Selection */
@@ -300,36 +273,69 @@ body {
 .role-card {
   background: var(--dark-light);
   border: 2px solid transparent;
-  border-radius: 20px;
+  border-radius: 16px;
   padding: 25px 15px;
   text-align: center;
   cursor: pointer;
   transition: all 0.3s;
 }
 
-.role-card:hover {
+.role-card:hover, .role-card.selected {
   border-color: var(--primary);
-  transform: translateY(-5px);
-}
-
-.role-card.selected {
-  border-color: var(--primary);
-  background: rgba(37, 99, 235, 0.1);
+  background: rgba(30,58,138,0.1);
+  transform: translateY(-3px);
 }
 
 .role-icon {
-  font-size: 40px;
-  margin-bottom: 15px;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary), var(--uae-red));
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 15px;
 }
 
 .role-title {
   font-weight: 700;
+  font-size: 16px;
   margin-bottom: 5px;
 }
 
 .role-desc {
   font-size: 12px;
   color: var(--gray);
+}
+
+/* UAE Cities Selector */
+.cities-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.city-btn {
+  background: var(--dark-light);
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  color: var(--uae-white);
+}
+
+.city-btn:hover, .city-btn.selected {
+  border-color: var(--primary);
+  background: rgba(30,58,138,0.2);
+}
+
+.city-name {
+  font-weight: 700;
+  font-size: 14px;
 }
 
 /* Main App */
@@ -341,32 +347,14 @@ body {
 
 .main-app.active {
   display: block;
-  animation: fadeIn 0.5s;
 }
 
-/* Header */
+/* App Header */
 .app-header {
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, var(--primary), var(--dark));
   padding: 20px;
   border-radius: 0 0 30px 30px;
   margin-bottom: 20px;
-  position: relative;
-  overflow: hidden;
-}
-
-.app-header::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
-}
-
-.header-content {
-  position: relative;
-  z-index: 1;
 }
 
 .header-top {
@@ -376,31 +364,60 @@ body {
   margin-bottom: 20px;
 }
 
-.menu-btn, .notification-btn {
+.header-logo {
+  font-size: 24px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon-btn {
   width: 45px;
   height: 45px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.1);
   border: none;
-  border-radius: 15px;
-  color: var(--white);
-  font-size: 20px;
+  border-radius: 12px;
+  color: var(--uae-white);
+  font-size: 18px;
   cursor: pointer;
   transition: all 0.3s;
+  position: relative;
 }
 
-.menu-btn:hover, .notification-btn:hover {
-  background: rgba(255,255,255,0.3);
-  transform: scale(1.1);
+.icon-btn:hover {
+  background: rgba(255,255,255,0.2);
 }
 
-.user-info h2 {
+.badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--uae-red);
+  color: var(--uae-white);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.user-welcome h2 {
   font-size: 14px;
-  opacity: 0.9;
+  opacity: 0.8;
   margin-bottom: 5px;
 }
 
-.user-info h1 {
-  font-size: 24px;
+.user-welcome h1 {
+  font-size: 22px;
   font-weight: 900;
 }
 
@@ -408,15 +425,17 @@ body {
 .location-bar {
   display: flex;
   align-items: center;
-  gap: 10px;
-  background: rgba(255,255,255,0.15);
-  padding: 12px 20px;
-  border-radius: 15px;
+  gap: 12px;
+  background: rgba(255,255,255,0.1);
+  padding: 14px 18px;
+  border-radius: 14px;
+  margin-top: 15px;
   backdrop-filter: blur(10px);
 }
 
-.location-bar i {
-  color: var(--secondary);
+.location-icon {
+  color: var(--gold);
+  font-size: 18px;
 }
 
 .location-text {
@@ -424,36 +443,158 @@ body {
   font-size: 14px;
 }
 
-.location-btn {
-  background: var(--secondary);
+.location-change {
+  background: var(--gold);
   color: var(--dark);
   border: none;
-  padding: 8px 15px;
-  border-radius: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
   font-size: 12px;
   font-weight: 700;
   cursor: pointer;
 }
 
-/* Services Grid */
-.services-section {
+/* Active Order */
+.active-order {
+  margin: 0 20px 25px;
+  background: linear-gradient(135deg, var(--primary), var(--uae-red));
+  border-radius: 24px;
+  padding: 25px;
+  position: relative;
+  overflow: hidden;
+}
+
+.active-order::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 60%);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.order-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,255,255,0.2);
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  background: #4ADE80;
+  border-radius: 50%;
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.order-details {
+  position: relative;
+  z-index: 1;
+}
+
+.order-service {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.order-provider {
+  opacity: 0.9;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.order-progress {
+  background: rgba(255,255,255,0.2);
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.order-progress-bar {
+  height: 100%;
+  width: 65%;
+  background: var(--uae-white);
+  border-radius: 4px;
+  position: relative;
+}
+
+.order-progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.order-time {
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+/* Services Section */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   padding: 0 20px;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
 }
 
 .section-title {
   font-size: 20px;
   font-weight: 900;
-  margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+.view-all {
+  color: var(--primary);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Services Grid */
 .services-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 15px;
+  padding: 0 20px;
+  margin-bottom: 25px;
 }
 
 .service-card {
@@ -475,26 +616,23 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, rgba(30,58,138,0.1) 0%, transparent 100%);
   opacity: 0;
   transition: opacity 0.3s;
-  z-index: 0;
 }
 
 .service-card:hover::before {
-  opacity: 0.1;
+  opacity: 1;
 }
 
 .service-card:hover {
   border-color: var(--primary);
   transform: translateY(-5px);
-  box-shadow: var(--shadow);
 }
 
 .service-icon {
   width: 70px;
   height: 70px;
-  background: var(--gradient-primary);
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -503,18 +641,18 @@ body {
   margin: 0 auto 15px;
   position: relative;
   z-index: 1;
-  box-shadow: 0 10px 30px rgba(37, 99, 235, 0.3);
 }
 
-.service-card:nth-child(2) .service-icon { background: var(--gradient-secondary); }
-.service-card:nth-child(3) .service-icon { background: linear-gradient(135deg, #10B981, #059669); }
-.service-card:nth-child(4) .service-icon { background: linear-gradient(135deg, #EF4444, #DC2626); }
-.service-card:nth-child(5) .service-icon { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
-.service-card:nth-child(6) .service-icon { background: linear-gradient(135deg, #EC4899, #DB2777); }
+.service-icon.wash { background: linear-gradient(135deg, #3B82F6, #1D4ED8); }
+.service-icon.oil { background: linear-gradient(135deg, #F59E0B, #D97706); }
+.service-icon.battery { background: linear-gradient(135deg, #10B981, #059669); }
+.service-icon.tires { background: linear-gradient(135deg, #EF4444, #DC2626); }
+.service-icon.repair { background: linear-gradient(135deg, #8B5CF6, #7C3AED); }
+.service-icon.polish { background: linear-gradient(135deg, #EC4899, #DB2777); }
 
 .service-name {
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 5px;
   position: relative;
   z-index: 1;
@@ -527,121 +665,29 @@ body {
   z-index: 1;
 }
 
-/* Active Request */
-.active-request {
-  margin: 0 20px 25px;
-  background: var(--gradient-primary);
-  border-radius: 24px;
-  padding: 25px;
-  position: relative;
-  overflow: hidden;
-}
-
-.active-request::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  right: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
-  animation: pulse 4s ease-in-out infinite;
-}
-
-.request-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  position: relative;
-  z-index: 1;
-}
-
-.request-status {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255,255,255,0.2);
-  padding: 8px 15px;
-  border-radius: 20px;
-  font-size: 14px;
-}
-
-.status-dot {
-  width: 8px;
-  height: 8px;
-  background: #10B981;
-  border-radius: 50%;
-  animation: blink 1s infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
-.request-details {
-  position: relative;
-  z-index: 1;
-}
-
-.request-service {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 5px;
-}
-
-.request-provider {
-  opacity: 0.9;
-  margin-bottom: 15px;
-}
-
-.request-progress {
-  background: rgba(255,255,255,0.2);
-  height: 8px;
-  border-radius: 4px;
-  overflow: hidden;
-  margin-bottom: 10px;
-}
-
-.request-progress-bar {
-  height: 100%;
-  width: 60%;
-  background: var(--white);
-  border-radius: 4px;
-  transition: width 0.5s;
-}
-
-.request-time {
-  font-size: 14px;
-  opacity: 0.9;
-}
-
 /* Provider Dashboard */
-.dashboard-header {
-  background: var(--dark-light);
-  padding: 20px;
-  margin-bottom: 20px;
-}
-
-.stats-grid {
+.dashboard-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
-  margin-bottom: 20px;
+  padding: 0 20px;
+  margin-bottom: 25px;
 }
 
 .stat-card {
-  background: var(--dark);
+  background: var(--dark-light);
   border-radius: 16px;
-  padding: 20px 15px;
+  padding: 20px 10px;
   text-align: center;
+  border: 1px solid rgba(255,255,255,0.05);
 }
 
 .stat-value {
-  font-size: 28px;
+  font-size: 26px;
   font-weight: 900;
-  color: var(--primary);
+  background: linear-gradient(135deg, var(--primary), var(--uae-red));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   margin-bottom: 5px;
 }
 
@@ -651,16 +697,26 @@ body {
 }
 
 /* Add Service Form */
-.add-service-form {
+.form-section {
   padding: 0 20px;
+  margin-bottom: 25px;
+}
+
+.section-subtitle {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .image-upload {
   width: 100%;
-  height: 200px;
+  height: 180px;
   background: var(--dark-light);
   border: 3px dashed var(--gray);
-  border-radius: 20px;
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -672,18 +728,37 @@ body {
 
 .image-upload:hover {
   border-color: var(--primary);
-  background: rgba(37, 99, 235, 0.05);
+  background: rgba(30,58,138,0.05);
 }
 
 .upload-icon {
   font-size: 50px;
   color: var(--gray);
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .upload-text {
   color: var(--gray);
   font-size: 14px;
+}
+
+/* Price Input with AED */
+.price-input-wrapper {
+  position: relative;
+}
+
+.price-currency {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.price-input-wrapper .form-input {
+  padding-left: 60px;
 }
 
 /* Bottom Navigation */
@@ -698,7 +773,7 @@ body {
   border-top: 1px solid rgba(255,255,255,0.1);
   display: flex;
   justify-content: space-around;
-  padding: 15px 0;
+  padding: 12px 0;
   z-index: 1000;
 }
 
@@ -706,33 +781,30 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   cursor: pointer;
-  padding: 5px 20px;
+  padding: 5px 15px;
   color: var(--gray);
   transition: all 0.3s;
+  border: none;
+  background: none;
 }
 
 .nav-item.active {
   color: var(--primary);
 }
 
-.nav-item.active .nav-icon {
-  transform: translateY(-5px);
-}
-
 .nav-icon {
-  font-size: 24px;
-  transition: transform 0.3s;
+  font-size: 22px;
 }
 
 .nav-label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
 }
 
 /* Modal */
-.modal {
+.modal-overlay {
   display: none;
   position: fixed;
   top: 0;
@@ -741,22 +813,28 @@ body {
   bottom: 0;
   background: rgba(0,0,0,0.8);
   z-index: 2000;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
-  padding: 20px;
 }
 
-.modal.active {
+.modal-overlay.active {
   display: flex;
 }
 
 .modal-content {
   background: var(--dark-light);
-  border-radius: 30px;
-  padding: 30px;
+  border-radius: 30px 30px 0 0;
+  padding: 30px 25px;
   width: 100%;
-  max-width: 400px;
-  animation: slideIn 0.3s;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
 }
 
 .modal-header {
@@ -771,7 +849,7 @@ body {
   font-weight: 900;
 }
 
-.close-btn {
+.modal-close {
   background: none;
   border: none;
   color: var(--gray);
@@ -779,29 +857,36 @@ body {
   cursor: pointer;
 }
 
-/* Service Details */
-.service-detail-image {
+.service-preview {
   width: 100%;
-  height: 250px;
-  background: var(--dark-light);
+  height: 200px;
+  background: var(--dark);
   border-radius: 20px;
-  margin-bottom: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 80px;
+  margin-bottom: 25px;
 }
 
 .price-tag {
   display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: var(--gradient-primary);
+  align-items: baseline;
+  gap: 8px;
+  background: linear-gradient(135deg, var(--primary), var(--uae-red));
   padding: 12px 25px;
-  border-radius: 15px;
-  font-size: 24px;
+  border-radius: 12px;
+  margin-bottom: 25px;
+}
+
+.price-amount {
+  font-size: 32px;
   font-weight: 900;
-  margin-bottom: 20px;
+}
+
+.price-currency {
+  font-size: 18px;
+  opacity: 0.9;
 }
 
 /* Toast */
@@ -812,19 +897,37 @@ body {
   transform: translateX(-50%) translateY(100px);
   background: var(--dark-light);
   border: 1px solid var(--primary);
-  padding: 15px 25px;
-  border-radius: 15px;
+  padding: 16px 24px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   opacity: 0;
   transition: all 0.3s;
   z-index: 3000;
+  max-width: 90%;
 }
 
 .toast.show {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
+}
+
+.toast-icon {
+  color: var(--success);
+  font-size: 20px;
+}
+
+/* UAE Badge */
+.uae-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(90deg, var(--uae-red), var(--uae-green), var(--uae-black));
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 /* Responsive */
@@ -833,7 +936,11 @@ body {
     grid-template-columns: 1fr;
   }
   
-  .stats-grid {
+  .dashboard-stats {
+    grid-template-columns: 1fr;
+  }
+  
+  .role-selection {
     grid-template-columns: 1fr;
   }
 }
@@ -842,357 +949,412 @@ body {
 </head>
 <body>
 
-<!-- Splash Screen -->
-<div class="splash-screen" id="splashScreen">
-  <div class="splash-logo">🚗</div>
-  <div class="splash-title">CarService Pro</div>
-  <div class="splash-subtitle">خدمات السيارات المتنقلة</div>
-  <div class="loading-bar">
-    <div class="loading-progress"></div>
-  </div>
-</div>
+<div class="uae-header"></div>
 
-<!-- Auth Screens -->
-<div class="auth-screen" id="loginScreen">
-  <div class="auth-header">
-    <div class="auth-icon">🚗</div>
-    <h1 class="auth-title">تسجيل الدخول</h1>
-    <p class="auth-subtitle">أهلاً بعودتك! سجل دخولك للمتابعة</p>
+<div class="app-container">
+  
+  <!-- Splash Screen -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-logo">🇦🇪</div>
+    <div class="splash-title">CarService UAE</div>
+    <div class="splash-subtitle">خدمات السيارات في الإمارات</div>
+    <div class="splash-location">
+      <i class="fas fa-map-marker-alt"></i>
+      <span>دبي • أبوظبي • الشارقة • العين</span>
+    </div>
+    <div class="loading-bar">
+      <div class="loading-progress"></div>
+    </div>
   </div>
   
-  <form onsubmit="handleLogin(event)">
-    <div class="form-group">
-      <label class="form-label">رقم الجوال</label>
-      <div class="input-icon">
-        <i class="fas fa-phone"></i>
-        <input type="tel" class="form-input" placeholder="05xxxxxxxx" required>
-      </div>
+  <!-- Login Screen -->
+  <div class="auth-screen" id="loginScreen">
+    <div class="auth-header">
+      <div class="auth-logo">🇦🇪</div>
+      <h1 class="auth-title">تسجيل الدخول</h1>
+      <p class="auth-subtitle">أهلاً بك في خدمات السيارات الإماراتية</p>
     </div>
     
-    <div class="form-group">
-      <label class="form-label">كلمة المرور</label>
-      <div class="input-icon">
-        <i class="fas fa-lock"></i>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <label class="form-label">رقم الهاتف (UAE)</label>
+        <input type="tel" class="form-input" placeholder="05xxxxxxxx" maxlength="10" required>
+        <div class="input-hint">مثال: 0501234567</div>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">كلمة المرور</label>
         <input type="password" class="form-input" placeholder="••••••••" required>
       </div>
+      
+      <button type="submit" class="btn btn-uae">
+        <i class="fas fa-sign-in-alt"></i>
+        <span>تسجيل الدخول</span>
+      </button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 25px; color: var(--gray);">
+      ليس لديك حساب؟ 
+      <span style="color: var(--primary); cursor: pointer; font-weight: 700;" onclick="showScreen('registerScreen')">
+        سجل الآن
+      </span>
+    </div>
+  </div>
+  
+  <!-- Register Screen -->
+  <div class="auth-screen" id="registerScreen">
+    <div class="auth-header">
+      <div class="auth-logo">🇦🇪</div>
+      <h1 class="auth-title">إنشاء حساب</h1>
+      <p class="auth-subtitle">اختر نوع الحساب والمدينة</p>
     </div>
     
-    <button type="submit" class="btn btn-primary">
-      <i class="fas fa-sign-in-alt"></i>
-      <span>تسجيل الدخول</span>
-    </button>
-  </form>
-  
-  <div class="auth-toggle">
-    ليس لديك حساب؟ <span onclick="showScreen('registerScreen')">سجل الآن</span>
-  </div>
-</div>
-
-<!-- Register Screen -->
-<div class="auth-screen" id="registerScreen">
-  <div class="auth-header">
-    <div class="auth-icon">🆕</div>
-    <h1 class="auth-title">إنشاء حساب</h1>
-    <p class="auth-subtitle">اختر نوع الحساب المناسب لك</p>
-  </div>
-  
-  <div class="role-selection">
-    <div class="role-card" onclick="selectRole(this, 'customer')">
-      <div class="role-icon">👤</div>
-      <div class="role-title">عميل</div>
-      <div class="role-desc">أطلب خدمات لسيارتك</div>
-    </div>
-    <div class="role-card" onclick="selectRole(this, 'provider')">
-      <div class="role-icon">🏪</div>
-      <div class="role-title">صاحب محل</div>
-      <div class="role-desc">قدم خدماتك للعملاء</div>
-    </div>
-  </div>
-  
-  <form onsubmit="handleRegister(event)">
     <div class="form-group">
-      <label class="form-label">الاسم الكامل</label>
-      <div class="input-icon">
-        <i class="fas fa-user"></i>
+      <label class="form-label">اختر المدينة</label>
+      <div class="cities-grid">
+        <div class="city-btn selected" onclick="selectCity(this, 'dubai')">
+          <div class="city-name">🇦🇪 دبي</div>
+        </div>
+        <div class="city-btn" onclick="selectCity(this, 'abudhabi')">
+          <div class="city-name">🇦🇪 أبوظبي</div>
+        </div>
+        <div class="city-btn" onclick="selectCity(this, 'sharjah')">
+          <div class="city-name">🇦🇪 الشارقة</div>
+        </div>
+        <div class="city-btn" onclick="selectCity(this, 'alain')">
+          <div class="city-name">🇦🇪 العين</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="role-selection">
+      <div class="role-card" onclick="selectRole(this, 'customer')">
+        <div class="role-icon">👤</div>
+        <div class="role-title">عميل</div>
+        <div class="role-desc">أطلب خدمات لسيارتك</div>
+      </div>
+      <div class="role-card" onclick="selectRole(this, 'provider')">
+        <div class="role-icon">🏪</div>
+        <div class="role-title">مزود خدمة</div>
+        <div class="role-desc">سجل محلك وقدم خدمات</div>
+      </div>
+    </div>
+    
+    <form onsubmit="handleRegister(event)">
+      <div class="form-group">
+        <label class="form-label">الاسم الكامل</label>
         <input type="text" class="form-input" placeholder="محمد أحمد" required>
       </div>
-    </div>
-    
-    <div class="form-group">
-      <label class="form-label">رقم الجوال</label>
-      <div class="input-icon">
-        <i class="fas fa-phone"></i>
-        <input type="tel" class="form-input" placeholder="05xxxxxxxx" required>
+      
+      <div class="form-group">
+        <label class="form-label">رقم الهاتف (UAE)</label>
+        <input type="tel" class="form-input" placeholder="05xxxxxxxx" maxlength="10" required>
       </div>
-    </div>
-    
-    <div class="form-group">
-      <label class="form-label">كلمة المرور</label>
-      <div class="input-icon">
-        <i class="fas fa-lock"></i>
+      
+      <div class="form-group">
+        <label class="form-label">البريد الإلكتروني</label>
+        <input type="email" class="form-input" placeholder="name@email.ae" required>
+      </div>
+      
+      <div class="form-group">
+        <label class="form-label">كلمة المرور</label>
         <input type="password" class="form-input" placeholder="••••••••" required>
       </div>
-    </div>
+      
+      <button type="submit" class="btn btn-uae">
+        <i class="fas fa-user-plus"></i>
+        <span>إنشاء حساب</span>
+      </button>
+    </form>
     
-    <button type="submit" class="btn btn-primary">
-      <i class="fas fa-user-plus"></i>
-      <span>إنشاء حساب</span>
-    </button>
-  </form>
-  
-  <div class="auth-toggle">
-    لديك حساب بالفعل؟ <span onclick="showScreen('loginScreen')">سجل دخولك</span>
+    <div style="text-align: center; margin-top: 25px; color: var(--gray);">
+      لديك حساب بالفعل؟ 
+      <span style="color: var(--primary); cursor: pointer; font-weight: 700;" onclick="showScreen('loginScreen')">
+        سجل دخولك
+      </span>
+    </div>
   </div>
-</div>
-
-<!-- Customer App -->
-<div class="main-app" id="customerApp">
-  <header class="app-header">
-    <div class="header-content">
+  
+  <!-- Customer App -->
+  <div class="main-app" id="customerApp">
+    <header class="app-header">
       <div class="header-top">
-        <button class="menu-btn" onclick="showToast('☰ القائمة قريباً')">
-          <i class="fas fa-bars"></i>
-        </button>
-        <button class="notification-btn" onclick="showToast('🔔 الإشعارات')">
-          <i class="fas fa-bell"></i>
-        </button>
+        <div class="header-logo">
+          🇦🇪 CarService
+        </div>
+        <div class="header-actions">
+          <button class="icon-btn" onclick="showToast('🔔 الإشعارات')">
+            <i class="fas fa-bell"></i>
+            <span class="badge">2</span>
+          </button>
+          <button class="icon-btn" onclick="showToast('🛒 السلة')">
+            <i class="fas fa-shopping-cart"></i>
+          </button>
+        </div>
       </div>
-      <div class="user-info">
-        <h2>أهلاً بك،</h2>
+      
+      <div class="user-welcome">
+        <h2>أهلاً بك في الإمارات 🇦🇪</h2>
         <h1>محمد أحمد 👋</h1>
       </div>
-      <div class="location-bar" style="margin-top: 20px;">
-        <i class="fas fa-map-marker-alt"></i>
-        <span class="location-text">الرياض، حي الolaya</span>
-        <button class="location-btn" onclick="showToast('📍 تحديث الموقع')">تحديث</button>
+      
+      <div class="location-bar">
+        <div class="location-icon">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="location-text">
+          <div style="font-weight: 700;">دبي</div>
+          <div style="font-size: 12px; opacity: 0.8;">البرشاء، شارع الشيخ زايد</div>
+        </div>
+        <button class="location-change" onclick="showToast('📍 تغيير الموقع')">
+          تغيير
+        </button>
+      </div>
+    </header>
+    
+    <!-- Active Order -->
+    <div class="active-order">
+      <div class="order-header">
+        <span style="font-weight: 700; font-size: 14px;">📋 الطلب الحالي</span>
+        <div class="order-status">
+          <span class="status-dot"></span>
+          <span>الفني في الطريق</span>
+        </div>
+      </div>
+      <div class="order-details">
+        <div class="order-service">🧼 غسيل سيارة كامل</div>
+        <div class="order-provider">مغسلة الالماسة - دبي</div>
+        <div class="order-progress">
+          <div class="order-progress-bar"></div>
+        </div>
+        <div class="order-time">🚗 الوصول خلال 12 دقيقة</div>
       </div>
     </div>
-  </header>
-  
-  <!-- Active Request -->
-  <div class="active-request">
-    <div class="request-header">
-      <span style="font-weight: 700;">الطلب الحالي</span>
-      <div class="request-status">
-        <span class="status-dot"></span>
-        <span>في الطريق</span>
+    
+    <!-- Services -->
+    <div class="section-header">
+      <div class="section-title">
+        <i class="fas fa-th-large" style="color: var(--primary);"></i>
+        <span>الخدمات المتاحة</span>
+      </div>
+      <div class="view-all" onclick="showToast('📋 جميع الخدمات')">
+        <span>الكل</span>
+        <i class="fas fa-chevron-left"></i>
       </div>
     </div>
-    <div class="request-details">
-      <div class="request-service">🧼 غسيل سيارة كامل</div>
-      <div class="request-provider">مغسلة الالماسة</div>
-      <div class="request-progress">
-        <div class="request-progress-bar"></div>
-      </div>
-      <div class="request-time">الوصول خلال 15 دقيقة</div>
-    </div>
-  </div>
-  
-  <!-- Services -->
-  <div class="services-section">
-    <h2 class="section-title">
-      <i class="fas fa-th-large" style="color: var(--primary);"></i>
-      <span>الخدمات المتاحة</span>
-    </h2>
     
     <div class="services-grid">
-      <div class="service-card" onclick="openServiceModal('غسيل سيارة', '80', '🧼')">
-        <div class="service-icon">🧼</div>
+      <div class="service-card" onclick="openServiceModal('غسيل سيارة', '80', '🧼', 'غسيل خارجي وداخلي كامل مع تنظيف المقاعد')">
+        <div class="service-icon wash">🧼</div>
         <div class="service-name">غسيل سيارة</div>
         <div class="service-desc">داخلي وخارجي</div>
       </div>
       
-      <div class="service-card" onclick="openServiceModal('تغيير زيت', '120', '🛢️')">
-        <div class="service-icon">🛢️</div>
+      <div class="service-card" onclick="openServiceModal('تغيير زيت', '120', '🛢️', 'تغيير زيت المحرك مع فلتر وفحص شامل')">
+        <div class="service-icon oil">🛢️</div>
         <div class="service-name">تغيير زيت</div>
         <div class="service-desc">فحص شامل مجاني</div>
       </div>
       
-      <div class="service-card" onclick="openServiceModal('تبديل بطارية', '350', '🔋')">
-        <div class="service-icon">🔋</div>
+      <div class="service-card" onclick="openServiceModal('تبديل بطارية', '350', '🔋', 'تركيب بطارية جديدة أصلية في الموقع')">
+        <div class="service-icon battery">🔋</div>
         <div class="service-name">تبديل بطارية</div>
-        <div class="service-desc">تركيب في الموقع</div>
+        <div class="service-desc">ضمان سنة</div>
       </div>
       
-      <div class="service-card" onclick="openServiceModal('تبديل إطارات', '150', '🛞')">
-        <div class="service-icon">🛞</div>
+      <div class="service-card" onclick="openServiceModal('تبديل إطارات', '150', '🛞', 'تبديل 4 إطارات مع موازنة وتركيب')">
+        <div class="service-icon tires">🛞</div>
         <div class="service-name">تبديل إطارات</div>
         <div class="service-desc">موازنة مجانية</div>
       </div>
       
-      <div class="service-card" onclick="openServiceModal('صيانة سريعة', '200', '🔧')">
-        <div class="service-icon">🔧</div>
+      <div class="service-card" onclick="openServiceModal('صيانة سريعة', '200', '🔧', 'كشف وإصلاح الأعطال البسيطة في الموقع')">
+        <div class="service-icon repair">🔧</div>
         <div class="service-name">صيانة سريعة</div>
         <div class="service-desc">كشف وإصلاح</div>
       </div>
       
-      <div class="service-card" onclick="openServiceModal('تلميع ونانو', '400', '✨')">
-        <div class="service-icon">✨</div>
+      <div class="service-card" onclick="openServiceModal('تلميع ونانو', '450', '✨', 'تلميع كامل مع طلاء نانو حماية')">
+        <div class="service-icon polish">✨</div>
         <div class="service-name">تلميع ونانو</div>
         <div class="service-desc">حماية كاملة</div>
       </div>
     </div>
   </div>
-</div>
-
-<!-- Provider Dashboard -->
-<div class="main-app" id="providerApp">
-  <div class="dashboard-header">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-      <div>
-        <h2 style="font-size: 14px; color: var(--gray);">لوحة التحكم</h2>
-        <h1 style="font-size: 24px; font-weight: 900;">مغسلة الالماسة</h1>
+  
+  <!-- Provider Dashboard -->
+  <div class="main-app" id="providerApp">
+    <div style="padding: 20px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <div>
+          <div style="font-size: 12px; color: var(--gray);">لوحة التحكم</div>
+          <div style="font-size: 24px; font-weight: 900;">مغسلة الالماسة 🇦🇪</div>
+          <div style="font-size: 13px; color: var(--gray);">دبي - البرشاء</div>
+        </div>
+        <button class="icon-btn" onclick="logout()" style="width: 50px; height: 50px;">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
       </div>
-      <button class="btn" style="width: auto; padding: 10px 20px;" onclick="logout()">
-        <i class="fas fa-sign-out-alt"></i>
-      </button>
+      
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <div class="stat-value">24</div>
+          <div class="stat-label">طلب اليوم</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">8</div>
+          <div class="stat-label">قيد التنفيذ</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">4.9</div>
+          <div class="stat-label">التقييم ⭐</div>
+        </div>
+      </div>
     </div>
     
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-value">24</div>
-        <div class="stat-label">طلب اليوم</div>
+    <!-- Add Service -->
+    <div class="form-section">
+      <div class="section-subtitle">
+        <i class="fas fa-plus-circle" style="color: var(--success);"></i>
+        <span>إضافة خدمة جديدة</span>
       </div>
-      <div class="stat-card">
-        <div class="stat-value">8</div>
-        <div class="stat-label">قيد التنفيذ</div>
+      
+      <div class="image-upload" onclick="showToast('📸 اختيار صورة من المعرض')">
+        <div class="upload-icon">
+          <i class="fas fa-camera"></i>
+        </div>
+        <div class="upload-text">اضغط لإضافة صورة الخدمة</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-value">4.9</div>
-        <div class="stat-label">التقييم</div>
+      
+      <form onsubmit="handleAddService(event)">
+        <div class="form-group">
+          <label class="form-label">اسم الخدمة</label>
+          <input type="text" class="form-input" placeholder="مثال: غسيل سيارة كامل" required>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">السعر (درهم إماراتي)</label>
+          <div class="price-input-wrapper">
+            <span class="price-currency">AED</span>
+            <input type="number" class="form-input price-input" placeholder="80" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">الوصف</label>
+          <input type="text" class="form-input" placeholder="وصف مختصر للخدمة...">
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">المدة المتوقعة</label>
+          <input type="text" class="form-input" placeholder="مثال: 30 دقيقة">
+        </div>
+        
+        <button type="submit" class="btn btn-success">
+          <i class="fas fa-plus"></i>
+          <span>إضافة الخدمة</span>
+        </button>
+      </form>
+    </div>
+    
+    <!-- My Services -->
+    <div style="padding: 0 20px;">
+      <div class="section-subtitle">
+        <i class="fas fa-list" style="color: var(--primary);"></i>
+        <span>خدماتي</span>
+      </div>
+      
+      <div class="services-grid">
+        <div class="service-card">
+          <div class="service-icon wash">🧼</div>
+          <div class="service-name">غسيل كامل</div>
+          <div style="color: var(--success); font-weight: 700; margin-top: 5px;">80 AED</div>
+        </div>
+        <div class="service-card">
+          <div class="service-icon polish">✨</div>
+          <div class="service-name">تلميع داخلي</div>
+          <div style="color: var(--success); font-weight: 700; margin-top: 5px;">150 AED</div>
+        </div>
       </div>
     </div>
   </div>
   
-  <!-- Add Service Form -->
-  <div class="add-service-form">
-    <h2 class="section-title">
-      <i class="fas fa-plus-circle" style="color: var(--success);"></i>
-      <span>إضافة خدمة جديدة</span>
-    </h2>
-    
-    <div class="image-upload" onclick="showToast('📸 اختيار صورة')">
-      <div class="upload-icon"><i class="fas fa-camera"></i></div>
-      <div class="upload-text">اضغط لإضافة صورة الخدمة</div>
-    </div>
-    
-    <form onsubmit="handleAddService(event)">
-      <div class="form-group">
-        <label class="form-label">اسم الخدمة</label>
-        <input type="text" class="form-input" placeholder="مثال: غسيل سيارة كامل" required>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">السعر (ريال)</label>
-        <input type="number" class="form-input" placeholder="80" required>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">الوصف</label>
-        <input type="text" class="form-input" placeholder="وصف مختصر للخدمة...">
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">المدة المتوقعة</label>
-        <input type="text" class="form-input" placeholder="30 دقيقة">
-      </div>
-      
-      <button type="submit" class="btn btn-success">
-        <i class="fas fa-plus"></i>
-        <span>إضافة الخدمة</span>
-      </button>
-    </form>
-  </div>
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav" id="bottomNav" style="display: none;">
+    <button class="nav-item active" onclick="setActiveNav(this)">
+      <div class="nav-icon"><i class="fas fa-home"></i></div>
+      <div class="nav-label">الرئيسية</div>
+    </button>
+    <button class="nav-item" onclick="setActiveNav(this)">
+      <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
+      <div class="nav-label">طلباتي</div>
+    </button>
+    <button class="nav-item" onclick="setActiveNav(this)">
+      <div class="nav-icon"><i class="fas fa-comment"></i></div>
+      <div class="nav-label">الدردشة</div>
+    </button>
+    <button class="nav-item" onclick="setActiveNav(this)">
+      <div class="nav-icon"><i class="fas fa-user"></i></div>
+      <div class="nav-label">حسابي</div>
+    </button>
+  </nav>
   
-  <!-- My Services -->
-  <div style="padding: 0 20px; margin-top: 30px;">
-    <h2 class="section-title">
-      <i class="fas fa-list" style="color: var(--primary);"></i>
-      <span>خدماتي</span>
-    </h2>
-    
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-icon">🧼</div>
-        <div class="service-name">غسيل كامل</div>
-        <div style="color: var(--success); font-weight: 700;">80 ريال</div>
-      </div>
-      <div class="service-card">
-        <div class="service-icon">✨</div>
-        <div class="service-name">تلميع داخلي</div>
-        <div style="color: var(--success); font-weight: 700;">150 ريال</div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- Service Modal -->
-<div class="modal" id="serviceModal">
+<div class="modal-overlay" id="serviceModal">
   <div class="modal-content">
     <div class="modal-header">
       <h3 class="modal-title" id="modalTitle">تفاصيل الخدمة</h3>
-      <button class="close-btn" onclick="closeModal()">
+      <button class="modal-close" onclick="closeModal()">
         <i class="fas fa-times"></i>
       </button>
     </div>
     
-    <div class="service-detail-image" id="modalIcon">🧼</div>
+    <div class="service-preview" id="modalIcon">🧼</div>
     
     <div class="price-tag">
-      <span id="modalPrice">80</span>
-      <span>ريال</span>
+      <span class="price-amount" id="modalPrice">80</span>
+      <span class="price-currency">AED</span>
     </div>
     
+    <p id="modalDesc" style="color: var(--gray); margin-bottom: 25px; line-height: 1.6;">
+      غسيل خارجي وداخلي كامل مع تنظيف المقاعد
+    </p>
+    
     <div class="form-group">
-      <label class="form-label">الموقع</label>
-      <div class="input-icon">
-        <i class="fas fa-map-marker-alt"></i>
-        <input type="text" class="form-input" value="الرياض، حي الolaya" id="serviceLocation">
+      <label class="form-label">الموقع الحالي</label>
+      <div class="location-bar" style="margin-top: 0;">
+        <div class="location-icon">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="location-text">دبي، البرشاء، شارع الشيخ زايد</div>
       </div>
     </div>
     
     <div class="form-group">
-      <label class="form-label">ملاحظات</label>
-      <input type="text" class="form-input" placeholder="أي تعليمات خاصة...">
+      <label class="form-label">ملاحظات (اختياري)</label>
+      <input type="text" class="form-input" placeholder="أي تعليمات خاصة للفني...">
     </div>
     
-    <button class="btn btn-primary" onclick="requestService()">
+    <button class="btn btn-uae" onclick="requestService()">
       <i class="fas fa-paper-plane"></i>
-      <span>طلب الخدمة</span>
+      <span>طلب الخدمة الآن</span>
     </button>
   </div>
 </div>
 
-<!-- Bottom Navigation -->
-<nav class="bottom-nav" id="bottomNav" style="display: none;">
-  <div class="nav-item active" onclick="setActiveNav(this)">
-    <div class="nav-icon"><i class="fas fa-home"></i></div>
-    <div class="nav-label">الرئيسية</div>
-  </div>
-  <div class="nav-item" onclick="setActiveNav(this)">
-    <div class="nav-icon"><i class="fas fa-clipboard-list"></i></div>
-    <div class="nav-label">طلباتي</div>
-  </div>
-  <div class="nav-item" onclick="setActiveNav(this)">
-    <div class="nav-icon"><i class="fas fa-comment"></i></div>
-    <div class="nav-label">الدردشة</div>
-  </div>
-  <div class="nav-item" onclick="setActiveNav(this)">
-    <div class="nav-icon"><i class="fas fa-user"></i></div>
-    <div class="nav-label">حسابي</div>
-  </div>
-</nav>
-
 <!-- Toast -->
 <div class="toast" id="toast">
-  <i class="fas fa-check-circle" style="color: var(--success);"></i>
-  <span id="toastMessage">تم بنجاح</span>
+  <div class="toast-icon"><i class="fas fa-check-circle"></i></div>
+  <div id="toastMessage">تم بنجاح</div>
 </div>
 
 <script>
 // Global Variables
 let currentUser = null;
 let selectedRole = null;
+let selectedCity = 'dubai';
 
 // Splash Screen
 window.addEventListener('load', () => {
@@ -1210,11 +1372,16 @@ function showScreen(screenId) {
   document.getElementById(screenId).classList.add('active');
 }
 
+// City Selection
+function selectCity(element, city) {
+  document.querySelectorAll('.city-btn').forEach(btn => btn.classList.remove('selected'));
+  element.classList.add('selected');
+  selectedCity = city;
+}
+
 // Role Selection
 function selectRole(element, role) {
-  document.querySelectorAll('.role-card').forEach(card => {
-    card.classList.remove('selected');
-  });
+  document.querySelectorAll('.role-card').forEach(card => card.classList.remove('selected'));
   element.classList.add('selected');
   selectedRole = role;
 }
@@ -1239,7 +1406,7 @@ function handleRegister(e) {
     return;
   }
   
-  showToast('✅ تم إنشاء الحساب بنجاح');
+  showToast('✅ تم إنشاء الحساب بنجاح في ' + getCityName(selectedCity));
   
   setTimeout(() => {
     document.getElementById('bottomNav').style.display = 'flex';
@@ -1251,6 +1418,16 @@ function handleRegister(e) {
   }, 1000);
 }
 
+function getCityName(city) {
+  const cities = {
+    'dubai': 'دبي',
+    'abudhabi': 'أبوظبي',
+    'sharjah': 'الشارقة',
+    'alain': 'العين'
+  };
+  return cities[city] || city;
+}
+
 // Add Service Handler
 function handleAddService(e) {
   e.preventDefault();
@@ -1259,10 +1436,11 @@ function handleAddService(e) {
 }
 
 // Service Modal
-function openServiceModal(name, price, icon) {
+function openServiceModal(name, price, icon, desc) {
   document.getElementById('modalTitle').textContent = name;
   document.getElementById('modalPrice').textContent = price;
   document.getElementById('modalIcon').textContent = icon;
+  document.getElementById('modalDesc').textContent = desc;
   document.getElementById('serviceModal').classList.add('active');
 }
 
@@ -1272,7 +1450,7 @@ function closeModal() {
 
 function requestService() {
   closeModal();
-  showToast('📋 تم إرسال طلبك، سيتواصل معك المزود قريباً');
+  showToast('📋 تم إرسال طلبك! سيتواصل معك الفني قريباً');
 }
 
 // Toast Notification
@@ -1288,9 +1466,7 @@ function showToast(message) {
 
 // Navigation
 function setActiveNav(element) {
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.classList.remove('active');
-  });
+  document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
   element.classList.add('active');
 }
 
@@ -1314,20 +1490,20 @@ document.getElementById('serviceModal').addEventListener('click', (e) => {
 </html>'''
 
 # حفظ الملف
-with open('/mnt/kimi/output/carservice_pro.html', 'w', encoding='utf-8') as f:
-    f.write(car_service_app)
+with open('/mnt/kimi/output/carservice_uae.html', 'w', encoding='utf-8') as f:
+    f.write(carservice_uae)
 
-print("✅ تم إنشاء تطبيق CarService Pro - خدمات السيارات المتكامل!")
-print("\n🚗 المميزات الرئيسية:")
-print("  • شاشة Splash احترافية مع Loading Animation")
+print("✅ تم إنشاء CarService UAE - نظام حقيقي للإمارات!")
+print("\n🇦🇪 المميزات الحقيقية:")
+print("  • ألوان علم الإمارات (أحمر، أخضر، أبيض، أسود)")
+print("  • 4 مدن: دبي، أبوظبي، الشارقة، العين")
+print("  • رقم هاتف إماراتي (05xxxxxxxx)")
+print("  • عملة درهم إماراتي (AED)")
 print("  • نظام تسجيل دخول / إنشاء حساب كامل")
-print("  • اختيار نوع الحساب (عميل / صاحب محل)")
-print("  • لوحة تحكم للعملاء مع طلب الخدمات")
-print("  • لوحة تحكم لأصحاب المحلات مع إضافة خدمات")
+print("  • اختيار المدينة والموقع")
 print("  • 6 خدمات: غسيل، زيت، بطارية، إطارات، صيانة، تلميع")
-print("  • نظام موقع GPS")
-print("  • Modal لتفاصيل الخدمة والطلب")
-print("  • Toast Notifications")
-print("  • Bottom Navigation")
-print("  • تصميم متجاوب بالكامل")
-print("\n📁 الملف: carservice_pro.html")
+print("  • لوحة تحكم لأصحاب المحلات")
+print("  • إضافة خدمات مع صور وأسعار")
+print("  • تتبع الطلبات في الوقت الفعلي")
+print("  • نظام تقييم")
+print("\n📁 الملف: carservice_uae.html")
