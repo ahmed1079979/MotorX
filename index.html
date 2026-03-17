@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MotorX Pro</title>
+<title>MotorX</title>
 
 <style>
 body {
@@ -12,180 +12,99 @@ body {
   background: #000;
   color: white;
   text-align: center;
+  overflow-x: hidden;
+}
+
+/* 🔥 شاشة التحميل */
+#splash {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 999;
 }
 
 .logo {
   width: 120px;
-  margin: 20px auto;
-  display: block;
+  animation: zoom 1.5s ease;
 }
 
+@keyframes zoom {
+  from {transform: scale(0.5); opacity:0;}
+  to {transform: scale(1); opacity:1;}
+}
+
+/* ✨ الصفحة */
 .container {
   max-width: 400px;
   margin: auto;
+  padding: 20px;
+  display: none;
+  animation: fade 1s ease;
 }
 
-.btn {
-  width: 100%;
-  padding: 15px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 12px;
-  background: #111;
-  color: white;
-  cursor: pointer;
+@keyframes fade {
+  from {opacity:0; transform: translateY(20px);}
+  to {opacity:1; transform: translateY(0);}
 }
 
+/* 💎 كروت */
 .card {
   background: #111;
   padding: 15px;
-  border-radius: 12px;
-  margin: 10px;
+  border-radius: 15px;
+  margin: 10px 0;
+  transition: 0.3s;
 }
 
-input {
-  width: 90%;
-  padding: 10px;
-  margin: 5px;
-  border-radius: 8px;
-  border: none;
+.card:hover {
+  transform: scale(1.03);
+  background: #1c1c1c;
+}
+
+/* 🔘 زر */
+.btn {
+  background: linear-gradient(45deg, red, orange);
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png" class="logo">
+<!-- 🔥 Splash Screen -->
+<div id="splash">
+  <img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png" class="logo">
+  <p>Loading...</p>
+</div>
 
-<div class="container">
+<!-- 🚀 التطبيق -->
+<div class="container" id="app">
 
-<!-- تسجيل محل -->
-<h3>🏪 تسجيل محل</h3>
-<input id="shopName" placeholder="اسم المحل">
-<input id="service" placeholder="الخدمة">
-<input id="price" placeholder="السعر">
-<button class="btn" onclick="addShop()">إضافة محل</button>
+  <h2>🚗 MotorX</h2>
 
-<!-- عرض المحلات -->
-<h3>📍 المحلات</h3>
-<div id="shops"></div>
+  <div class="card">🧼 غسيل سيارات</div>
+  <div class="card">🔧 صيانة</div>
+  <div class="card">🚨 طوارئ</div>
 
-<!-- تقييم -->
-<h3>⭐ تقييم</h3>
-<input id="rateName" placeholder="اسم المحل">
-<input id="rateValue" placeholder="التقييم من 5">
-<button class="btn" onclick="rateShop()">إضافة تقييم</button>
-
-<!-- طلب خدمة -->
-<h3>🚗 طلب خدمة متنقلة</h3>
-<input id="orderName" placeholder="اسمك">
-<input id="orderService" placeholder="نوع الخدمة">
-<button class="btn" onclick="makeOrder()">اطلب الآن</button>
-
-<!-- لوحة التحكم -->
-<h3>📊 لوحة التحكم</h3>
-<div id="orders"></div>
-
-<!-- ذكاء صناعي -->
-<h3>🤖 تشخيص المشكلة</h3>
-<input id="aiInput" placeholder="وش مشكلة سيارتك؟">
-<button class="btn" onclick="aiCheck()">تشخيص</button>
-<p id="aiResult"></p>
+  <div class="btn">اطلب الآن</div>
 
 </div>
 
 <script>
 
-// إضافة محل
-function addShop(){
-  let shops = JSON.parse(localStorage.getItem("shops") || "[]");
-
-  shops.push({
-    name: shopName.value,
-    service: service.value,
-    price: price.value,
-    rating: 0
-  });
-
-  localStorage.setItem("shops", JSON.stringify(shops));
-  displayShops();
-}
-
-// عرض المحلات
-function displayShops(){
-  let shops = JSON.parse(localStorage.getItem("shops") || "[]");
-  let html = "";
-
-  shops.forEach(s => {
-    html += `<div class="card">
-      <h4>${s.name}</h4>
-      <p>${s.service}</p>
-      <p>💰 ${s.price}</p>
-      <p>⭐ ${s.rating}</p>
-    </div>`;
-  });
-
-  document.getElementById("shops").innerHTML = html;
-}
-
-// تقييم
-function rateShop(){
-  let shops = JSON.parse(localStorage.getItem("shops") || "[]");
-
-  shops.forEach(s => {
-    if(s.name == rateName.value){
-      s.rating = rateValue.value;
-    }
-  });
-
-  localStorage.setItem("shops", JSON.stringify(shops));
-  displayShops();
-}
-
-// طلب خدمة
-function makeOrder(){
-  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-
-  orders.push({
-    name: orderName.value,
-    service: orderService.value
-  });
-
-  localStorage.setItem("orders", JSON.stringify(orders));
-  displayOrders();
-}
-
-// عرض الطلبات
-function displayOrders(){
-  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-  let html = "";
-
-  orders.forEach(o => {
-    html += `<div class="card">
-      <p>👤 ${o.name}</p>
-      <p>🔧 ${o.service}</p>
-    </div>`;
-  });
-
-  document.getElementById("orders").innerHTML = html;
-}
-
-// ذكاء صناعي بسيط
-function aiCheck(){
-  let text = aiInput.value;
-
-  if(text.includes("صوت")){
-    aiResult.innerText = "🔧 ممكن المشكلة في المكينة أو السير";
-  } else if(text.includes("حرارة")){
-    aiResult.innerText = "🔥 تحقق من الرديتر";
-  } else {
-    aiResult.innerText = "🤖 تحتاج فحص شامل";
-  }
-}
-
-// تحميل البيانات
-displayShops();
-displayOrders();
+// 🔥 Splash Screen
+setTimeout(() => {
+  document.getElementById("splash").style.display = "none";
+  document.getElementById("app").style.display = "block";
+}, 2000);
 
 </script>
 
