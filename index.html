@@ -5,218 +5,104 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MotorX</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
-  font-family: Arial;
-  background: #000;
+  font-family: 'Cairo', sans-serif;
+  background: linear-gradient(180deg, #0a0a0a, #000);
   color: white;
+}
+
+/* 🔥 Header */
+.header {
   text-align: center;
-}
-
-/* 🔥 Splash */
-#splash {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  z-index: 999;
-}
-
-.logo {
-  width: 120px;
-}
-
-.container {
-  display: none;
-  max-width: 400px;
-  margin: auto;
   padding: 20px;
 }
 
-/* 💎 UI */
-.card {
-  background: #111;
-  padding: 15px;
-  border-radius: 15px;
-  margin: 10px 0;
+.logo {
+  width: 110px;
 }
 
+/* 💎 كروت */
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(10px);
+  margin: 15px;
+  padding: 18px;
+  border-radius: 18px;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.03);
+}
+
+/* 🟢 زر */
 .btn {
   background: linear-gradient(45deg, red, orange);
   padding: 12px;
-  border-radius: 10px;
-  margin: 10px 0;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 10px;
   cursor: pointer;
 }
 
+/* ✨ Input */
 input {
   width: 90%;
-  padding: 10px;
-  margin: 5px;
-  border-radius: 8px;
+  padding: 12px;
+  margin: 8px;
+  border-radius: 10px;
   border: none;
 }
+
+/* 🔥 عنوان */
+h3 {
+  margin: 10px 0;
+}
 </style>
+
 </head>
 
 <body>
 
-<!-- Splash -->
-<div id="splash">
+<div class="header">
   <img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png" class="logo">
-  <p>Loading...</p>
 </div>
 
-<!-- App -->
-<div class="container" id="app">
+<!-- 🏪 تسجيل محل -->
+<div class="card">
+  <h3>🏪 إضافة محل</h3>
+  <input placeholder="اسم المحل">
+  <input placeholder="الخدمة">
+  <input placeholder="السعر">
+  <div class="btn">إضافة</div>
+</div>
 
-
-<img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png"
-     class="logo"
-     style="width:120px;">
-
-<!--  تسجيل محل -->
-<h3> تسجيل محل</h3>
-<input id="shopName" placeholder="اسم المحل">
-<input id="shopService" placeholder="الخدمة">
-<input id="shopPrice" placeholder="السعر">
-<div class="btn" onclick="addShop()">إضافة محل</div>
-
-<!-- عرض المحلات -->
-<h3>📍 المحلات</h3>
-<div id="shops"></div>
+<!-- 🚗 الخدمات -->
+<div class="card">
+  <h3>🚗 الخدمات</h3>
+  <div class="btn">🧼 غسيل</div>
+  <div class="btn">🔧 صيانة</div>
+  <div class="btn">🚨 طوارئ</div>
+</div>
 
 <!-- ⭐ تقييم -->
-<h3>⭐ تقييم</h3>
-<input id="rateName" placeholder="اسم المحل">
-<input id="rateValue" placeholder="التقييم من 5">
-<div class="btn" onclick="rateShop()">إضافة تقييم</div>
-
-<!--  طلب خدمة -->
-<h3> طلب خدمة متنقلة</h3>
-<input id="orderName" placeholder="اسمك">
-<input id="orderService" placeholder="الخدمة">
-<div class="btn" onclick="makeOrder()">اطلب</div>
-
-<!-- 📊 لوحة التحكم -->
-<h3>📊 الطلبات</h3>
-<div id="orders"></div>
-
-<!--  AI -->
-<h3> تشخيص</h3>
-<input id="aiInput" placeholder="وش مشكلة السيارة؟">
-<div class="btn" onclick="aiCheck()">تشخيص</div>
-<p id="aiResult"></p>
-
+<div class="card">
+  <h3>⭐ تقييم</h3>
+  <input placeholder="اسم المحل">
+  <input placeholder="التقييم">
+  <div class="btn">إرسال</div>
 </div>
 
-<script>
-
-// Splash
-setTimeout(() => {
-  splash.style.display = "none";
-  app.style.display = "block";
-}, 2000);
-
-// 🏪 إضافة محل
-function addShop(){
-  let shops = JSON.parse(localStorage.getItem("shops") || "[]");
-
-  shops.push({
-    name: shopName.value,
-    service: shopService.value,
-    price: shopPrice.value,
-    rating: 0
-  });
-
-  localStorage.setItem("shops", JSON.stringify(shops));
-  displayShops();
-}
-
-// عرض المحلات
-function displayShops(){
-  let shops = JSON.parse(localStorage.getItem("shops") || "[]");
-
-  let html = "";
-  shops.forEach(s => {
-    html += `
-    <div class="card">
-      <h4>${s.name}</h4>
-      <p>${s.service}</p>
-      <p>💰 ${s.price}</p>
-      <p>⭐ ${s.rating}</p>
-    </div>`;
-  });
-
-  document.getElementById("shops").innerHTML = html;
-}
-
-// ⭐ تقييم
-function rateShop(){
-  let shops = JSON.parse(localStorage.getItem("shops") || "[]");
-
-  shops.forEach(s => {
-    if(s.name == rateName.value){
-      s.rating = rateValue.value;
-    }
-  });
-
-  localStorage.setItem("shops", JSON.stringify(shops));
-  displayShops();
-}
-
-// 🚗 طلب
-function makeOrder(){
-  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-
-  orders.push({
-    name: orderName.value,
-    service: orderService.value
-  });
-
-  localStorage.setItem("orders", JSON.stringify(orders));
-  displayOrders();
-}
-
-// عرض الطلبات
-function displayOrders(){
-  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
-
-  let html = "";
-  orders.forEach(o => {
-    html += `
-    <div class="card">
-      <p>👤 ${o.name}</p>
-      <p>🔧 ${o.service}</p>
-    </div>`;
-  });
-
-  document.getElementById("orders").innerHTML = html;
-}
-
-// 🤖 AI
-function aiCheck(){
-  let text = aiInput.value;
-
-  if(text.includes("صوت")){
-    aiResult.innerText = "🔧 احتمال مشكلة في المكينة";
-  } else if(text.includes("حرارة")){
-    aiResult.innerText = "🔥 تأكد من الرديتر";
-  } else {
-    aiResult.innerText = "🤖 تحتاج فحص شامل";
-  }
-}
-
-// تحميل البيانات
-displayShops();
-displayOrders();
-
-</script>
+<!-- 🤖 AI -->
+<div class="card">
+  <h3>🤖 تشخيص</h3>
+  <input placeholder="وش مشكلة سيارتك؟">
+  <div class="btn">تشخيص</div>
+</div>
 
 </body>
 </html>
