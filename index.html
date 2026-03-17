@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MotorX</title>
+<title>MotorX Pro</title>
 
 <style>
 body {
@@ -14,20 +14,17 @@ body {
   text-align: center;
 }
 
-/* الشعار */
 .logo {
   width: 120px;
   margin: 20px auto;
   display: block;
 }
 
-/* صندوق */
 .container {
   max-width: 400px;
   margin: auto;
 }
 
-/* الأزرار */
 .btn {
   width: 100%;
   padding: 15px;
@@ -36,31 +33,7 @@ body {
   border-radius: 12px;
   background: #111;
   color: white;
-  font-size: 16px;
   cursor: pointer;
-}
-
-.btn:hover {
-  background: red;
-}
-
-/* الفورم */
-.form {
-  display: none;
-  margin-top: 20px;
-}
-
-input {
-  width: 90%;
-  padding: 12px;
-  margin: 8px 0;
-  border-radius: 8px;
-  border: none;
-}
-
-/* الصفحة الرئيسية */
-.dashboard {
-  display: none;
 }
 
 .card {
@@ -69,98 +42,152 @@ input {
   border-radius: 12px;
   margin: 10px;
 }
-</style>
 
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 8px;
+  border: none;
+}
+</style>
 </head>
+
 <body>
 
 <img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png" class="logo">
 
 <div class="container">
 
-<!-- الصفحة الرئيسية -->
-<div id="home">
-  <button class="btn" onclick="showLogin()">تسجيل دخول</button>
-  <button class="btn" onclick="showRegister()">إنشاء حساب</button>
-</div>
+<!-- تسجيل محل -->
+<h3>🏪 تسجيل محل</h3>
+<input id="shopName" placeholder="اسم المحل">
+<input id="service" placeholder="الخدمة">
+<input id="price" placeholder="السعر">
+<button class="btn" onclick="addShop()">إضافة محل</button>
 
-<!-- تسجيل دخول -->
-<div id="login" class="form">
-  <h3>تسجيل دخول</h3>
-  <input type="text" id="loginUser" placeholder="اسم المستخدم">
-  <input type="password" id="loginPass" placeholder="كلمة المرور">
-  <button class="btn" onclick="login()">دخول</button>
-</div>
+<!-- عرض المحلات -->
+<h3>📍 المحلات</h3>
+<div id="shops"></div>
 
-<!-- إنشاء حساب -->
-<div id="register" class="form">
-  <h3>إنشاء حساب</h3>
-  <input type="text" id="regUser" placeholder="اسم المستخدم">
-  <input type="password" id="regPass" placeholder="كلمة المرور">
-  <button class="btn" onclick="register()">تسجيل</button>
-</div>
+<!-- تقييم -->
+<h3>⭐ تقييم</h3>
+<input id="rateName" placeholder="اسم المحل">
+<input id="rateValue" placeholder="التقييم من 5">
+<button class="btn" onclick="rateShop()">إضافة تقييم</button>
 
-<!-- داخل التطبيق -->
-<div id="dashboard" class="dashboard">
-  <h2>🚗 MotorX</h2>
+<!-- طلب خدمة -->
+<h3>🚗 طلب خدمة متنقلة</h3>
+<input id="orderName" placeholder="اسمك">
+<input id="orderService" placeholder="نوع الخدمة">
+<button class="btn" onclick="makeOrder()">اطلب الآن</button>
 
-  <div class="card">🛠️ خدمات السيارات</div>
-  <div class="card">🚿 غسيل سيارات</div>
-  <div class="card">🔧 صيانة</div>
+<!-- لوحة التحكم -->
+<h3>📊 لوحة التحكم</h3>
+<div id="orders"></div>
 
-  <button class="btn" onclick="logout()">تسجيل خروج</button>
-</div>
+<!-- ذكاء صناعي -->
+<h3>🤖 تشخيص المشكلة</h3>
+<input id="aiInput" placeholder="وش مشكلة سيارتك؟">
+<button class="btn" onclick="aiCheck()">تشخيص</button>
+<p id="aiResult"></p>
 
 </div>
 
 <script>
-// عرض الصفحات
-function showLogin(){
-  home.style.display = "none";
-  login.style.display = "block";
+
+// إضافة محل
+function addShop(){
+  let shops = JSON.parse(localStorage.getItem("shops") || "[]");
+
+  shops.push({
+    name: shopName.value,
+    service: service.value,
+    price: price.value,
+    rating: 0
+  });
+
+  localStorage.setItem("shops", JSON.stringify(shops));
+  displayShops();
 }
 
-function showRegister(){
-  home.style.display = "none";
-  register.style.display = "block";
+// عرض المحلات
+function displayShops(){
+  let shops = JSON.parse(localStorage.getItem("shops") || "[]");
+  let html = "";
+
+  shops.forEach(s => {
+    html += `<div class="card">
+      <h4>${s.name}</h4>
+      <p>${s.service}</p>
+      <p>💰 ${s.price}</p>
+      <p>⭐ ${s.rating}</p>
+    </div>`;
+  });
+
+  document.getElementById("shops").innerHTML = html;
 }
 
-// تسجيل حساب
-function register(){
-  let user = regUser.value;
-  let pass = regPass.value;
+// تقييم
+function rateShop(){
+  let shops = JSON.parse(localStorage.getItem("shops") || "[]");
 
-  if(localStorage.getItem(user)){
-    alert("الحساب موجود!");
-    return;
-  }
+  shops.forEach(s => {
+    if(s.name == rateName.value){
+      s.rating = rateValue.value;
+    }
+  });
 
-  localStorage.setItem(user, pass);
-  alert("تم إنشاء الحساب");
+  localStorage.setItem("shops", JSON.stringify(shops));
+  displayShops();
 }
 
-// تسجيل دخول
-function login(){
-  let user = loginUser.value;
-  let pass = loginPass.value;
+// طلب خدمة
+function makeOrder(){
+  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
 
-  if(localStorage.getItem(user) === pass){
-    login.style.display = "none";
-    dashboard.style.display = "block";
+  orders.push({
+    name: orderName.value,
+    service: orderService.value
+  });
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+  displayOrders();
+}
+
+// عرض الطلبات
+function displayOrders(){
+  let orders = JSON.parse(localStorage.getItem("orders") || "[]");
+  let html = "";
+
+  orders.forEach(o => {
+    html += `<div class="card">
+      <p>👤 ${o.name}</p>
+      <p>🔧 ${o.service}</p>
+    </div>`;
+  });
+
+  document.getElementById("orders").innerHTML = html;
+}
+
+// ذكاء صناعي بسيط
+function aiCheck(){
+  let text = aiInput.value;
+
+  if(text.includes("صوت")){
+    aiResult.innerText = "🔧 ممكن المشكلة في المكينة أو السير";
+  } else if(text.includes("حرارة")){
+    aiResult.innerText = "🔥 تحقق من الرديتر";
   } else {
-    alert("خطأ في البيانات");
+    aiResult.innerText = "🤖 تحتاج فحص شامل";
   }
 }
 
-// تسجيل خروج
-function logout(){
-  dashboard.style.display = "none";
-  home.style.display = "block";
-}
+// تحميل البيانات
+displayShops();
+displayOrders();
+
 </script>
-
-
-<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcx2dw0Y-2EXMKpgyCiLe0uPkitOh9rT4&callback=initMap"></script>
 
 </body>
 </html>
