@@ -47,7 +47,6 @@
 
 <h1>🚗 MotorX</h1>
 
-<div class="btn" onclick="order('بنزين')">⛽ طلب بنزين</div>
 <div class="btn" onclick="order('غسيل')">🧼 غسيل سيارة</div>
 <div class="btn" onclick="order('صيانة')">🔧 صيانة</div>
 <div class="btn" onclick="order('طوارئ')">🚨 طوارئ</div>
@@ -55,34 +54,45 @@
 <div id="map"></div>
 
 <script>
-  
- function order(service) {
-  const box = document.createElement("div");
 
-  box.style.position = "fixed";
-  box.style.bottom = "20px";
-  box.style.left = "50%";
-  box.style.transform = "translateX(-50%)";
-  box.style.background = "#00c853";
-  box.style.color = "white";
-  box.style.padding = "15px 25px";
-  box.style.borderRadius = "10px";
-  box.style.fontSize = "16px";
-  box.style.boxShadow = "0 5px 20px rgba(0,0,0,0.3)";
+let userLocation = null;
+
+// كود الموقع
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition((position) => {
+      userLocation = {
+        lat: position.coords.latitude,
+        lng: position.coords.longitude
+      };
+    });
+  }
+}
+
+window.onload = getLocation;
+
+// 👇 هنا تحط قائمة المحلات (المهم 🔥)
+let shops = [
+  { name: "غسيل سريع", service: "غسيل", phone: "971500000001" },
+  { name: "كراج السرعة", service: "صيانة", phone: "971500000002" },
+  { name: "بنشر الطوارئ", service: "طوارئ", phone: "971500000003" }
+];
+
+// 👇 تحتها مباشرة دالة الطلب
+function order(service) {
+  let shop = shops.find(s => s.service === service);
 
   let locationText = userLocation
-    ? `📍 ${userLocation.lat}, ${userLocation.lng}`
-    : "📍 جاري تحديد الموقع...";
+    ? `📍 https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}`
+    : "📍 الموقع غير متوفر";
 
-  box.innerText = `✅ تم طلب: ${service}\n${locationText}`;
+  let message = `🚗 MotorX
+طلب خدمة: ${service}
+${locationText}`;
 
-  document.body.appendChild(box);
+  let url = `https://wa.me/${shop.phone}?text=${encodeURIComponent(message)}`;
 
-  setTimeout(() => {
-    box.remove();
-  }, 3000);
-
-  localStorage.setItem("lastOrder", service);
+  window.open(url, "_blank");
 }
 
   function initMap() {
