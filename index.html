@@ -13,10 +13,6 @@ body {
   text-align: center;
 }
 
-h1 {
-  margin-top: 20px;
-}
-
 .btn {
   background: #1c1c1c;
   padding: 15px;
@@ -24,11 +20,6 @@ h1 {
   width: 80%;
   border-radius: 12px;
   cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn:hover {
-  background: #333;
 }
 
 input, select {
@@ -41,160 +32,180 @@ input, select {
 
 button {
   padding: 10px 20px;
-  border: none;
   border-radius: 10px;
   background: #00c853;
   color: white;
+  border: none;
   cursor: pointer;
 }
 </style>
-
 </head>
+
 <body>
 
 <h1>🚗 MotorX</h1>
 
-<!-- تسجيل محل -->
-<div class="btn" onclick="showRegister()">📋 تسجيل محل</div>
+<!-- تسجيل / دخول -->
+<div id="authBox">
 
-<div id="registerBox" style="display:none;">
-  <input id="shopName" placeholder="اسم المحل"><br>
+  <h3>🔐 تسجيل الدخول</h3>
+  <input id="loginPhone" placeholder="رقمك"><br>
+  <input id="loginPass" type="password" placeholder="كلمة المرور"><br>
+  <button onclick="login()">دخول</button>
 
-  <select id="shopService">
-    <option value="غسيل">🧼 غسيل سيارة</option>
-    <option value="صيانة">🔧 صيانة</option>
-    <option value="طوارئ">🚨 طوارئ</option>
-  </select><br>
+  <h3>🆕 إنشاء حساب</h3>
+  <input id="regPhone" placeholder="رقمك"><br>
+  <input id="regPass" type="password" placeholder="كلمة المرور"><br>
+  <button onclick="register()">تسجيل</button>
 
-  <input id="shopPhone" placeholder="رقم الواتساب"><br>
-
-  <button onclick="saveShop()">💾 حفظ</button>
 </div>
 
-<!-- الخدمات -->
-<div class="btn" onclick="order('غسيل')">🧼 غسيل سيارة</div>
-<div class="btn" onclick="order('صيانة')">🔧 صيانة</div>
-<div class="btn" onclick="order('طوارئ')">🚨 طوارئ</div>
+<!-- لوحة المستخدم -->
+<div id="app" style="display:none;">
 
-<!-- عرض المحلات -->
-<div id="shopsList"></div>
+  <div class="btn" onclick="logout()">🚪 تسجيل خروج</div>
+
+  <div class="btn" onclick="showRegister()">📋 تسجيل محل</div>
+
+  <div id="registerBox" style="display:none;">
+    <input id="shopName" placeholder="اسم المحل"><br>
+
+    <select id="shopService">
+      <option value="غسيل">🧼 غسيل</option>
+      <option value="صيانة">🔧 صيانة</option>
+      <option value="طوارئ">🚨 طوارئ</option>
+    </select><br>
+
+    <input id="shopPhone" placeholder="رقم الواتساب"><br>
+
+    <button onclick="saveShop()">💾 حفظ</button>
+  </div>
+
+  <div class="btn" onclick="order('غسيل')">🧼 غسيل</div>
+  <div class="btn" onclick="order('صيانة')">🔧 صيانة</div>
+  <div class="btn" onclick="order('طوارئ')">🚨 طوارئ</div>
+
+  <div id="shopsList"></div>
+
+</div>
 
 <script>
 
-// 📍 موقع المستخدم
-let userLocation = null;
+// 🧠 المستخدم الحالي
+let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition((position) => {
-      userLocation = {
-        lat: position.coords.latitude,
-        lng: position.coords.longitude
-      };
-    });
-  }
+// 🔁 تشغيل تلقائي
+if (currentUser) {
+  showApp();
 }
-window.onload = getLocation;
 
+// 🆕 تسجيل حساب
+function register() {
+  let phone = document.getElementById("regPhone").value;
+  let pass = document.getElementById("regPass").value;
 
-// 🔥 قائمة أساسية
-let shops = [
-  { name: "غسيل سريع", service: "غسيل", phone: "971500000001" },
-  { name: "كراج السرعة", service: "صيانة", phone: "971500000002" },
-  { name: "بنشر الطوارئ", service: "طوارئ", phone: "971500000003" }
-];
+  let users = JSON.parse(localStorage.getItem("users")) || [];
 
-// تحميل المحلات
-let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
-shops = shops.concat(savedShops);
+  if (users.some(u => u.phone === phone)) {
+    alert("⚠️ الحساب موجود");
+    return;
+  }
 
+  users.push({ phone, pass });
+  localStorage.setItem("users", JSON.stringify(users));
 
-// 📋 اظهار الفورم
+  alert("✅ تم إنشاء الحساب");
+}
+
+// 🔐 تسجيل دخول
+function login() {
+  let phone = document.getElementById("loginPhone").value;
+  let pass = document.getElementById("loginPass").value;
+
+  let users = JSON.parse(localStorage.getItem("users")) || [];
+
+  let user = users.find(u => u.phone === phone && u.pass === pass);
+
+  if (!user) {
+    alert("❌ بيانات غلط");
+    return;
+  }
+
+  localStorage.setItem("currentUser", JSON.stringify(user));
+  currentUser = user;
+
+  showApp();
+}
+
+// 🚪 خروج
+function logout() {
+  localStorage.removeItem("currentUser");
+  location.reload();
+}
+
+// 🖥️ عرض التطبيق
+function showApp() {
+  document.getElementById("authBox").style.display = "none";
+  document.getElementById("app").style.display = "block";
+}
+
+// 📋 اظهار تسجيل محل
 function showRegister() {
   let box = document.getElementById("registerBox");
   box.style.display = box.style.display === "none" ? "block" : "none";
 }
 
+// 🔥 المحلات
+let shops = JSON.parse(localStorage.getItem("shops")) || [];
 
-// 💾 حفظ محل (مع منع التكرار)
+// 💾 حفظ محل مربوط بالمستخدم
 function saveShop() {
-  let name = document.getElementById("shopName").value.trim();
+  let name = document.getElementById("shopName").value;
   let service = document.getElementById("shopService").value;
-  let phone = document.getElementById("shopPhone").value.trim();
+  let phone = document.getElementById("shopPhone").value;
 
   if (!name || !phone) {
-    alert("❌ املأ كل البيانات");
+    alert("❌ املأ البيانات");
     return;
   }
 
-  let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
-
-  // ❌ منع التكرار
-  let exists = savedShops.some(s => s.phone === phone);
-
-  if (exists) {
-    alert("⚠️ هذا الرقم مسجل مسبقاً!");
+  // ❌ منع تكرار الرقم
+  if (shops.some(s => s.phone === phone)) {
+    alert("⚠️ الرقم مسجل");
     return;
   }
 
-  let newShop = { name, service, phone };
-
-  savedShops.push(newShop);
-  localStorage.setItem("shops", JSON.stringify(savedShops));
+  let newShop = {
+    name,
+    service,
+    phone,
+    owner: currentUser.phone
+  };
 
   shops.push(newShop);
+  localStorage.setItem("shops", JSON.stringify(shops));
 
   alert("✅ تم تسجيل المحل");
-
-  document.getElementById("shopName").value = "";
-  document.getElementById("shopPhone").value = "";
 }
 
-
-// 📦 عرض المحلات
+// 📦 عرض
 function order(service) {
   let list = shops.filter(s => s.service === service);
 
   let container = document.getElementById("shopsList");
   container.innerHTML = "";
 
-  if (list.length === 0) {
-    container.innerHTML = "❌ لا يوجد محلات حالياً";
-    return;
-  }
-
   list.forEach(shop => {
-    let btn = document.createElement("div");
+    let div = document.createElement("div");
+    div.innerText = "🏪 " + shop.name;
 
-    btn.innerText = "🏪 " + shop.name;
-    btn.style.background = "#222";
-    btn.style.color = "white";
-    btn.style.padding = "10px";
-    btn.style.margin = "10px auto";
-    btn.style.width = "80%";
-    btn.style.borderRadius = "10px";
-    btn.style.cursor = "pointer";
+    div.onclick = () => {
+      let url = `https://wa.me/${shop.phone}`;
+      window.open(url);
+    };
 
-    btn.onclick = () => sendWhatsApp(shop, service);
-
-    container.appendChild(btn);
+    container.appendChild(div);
   });
-}
-
-
-// 📲 واتساب
-function sendWhatsApp(shop, service) {
-  let locationText = userLocation
-    ? `📍 https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}`
-    : "📍 الموقع غير متوفر";
-
-  let message = `🚗 MotorX
-طلب خدمة: ${service}
-${locationText}`;
-
-  let url = `https://wa.me/${shop.phone}?text=${encodeURIComponent(message)}`;
-
-  window.open(url, "_blank");
 }
 
 </script>
