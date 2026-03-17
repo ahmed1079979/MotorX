@@ -74,12 +74,29 @@ input, select {
   font-size: 22px;
 }
 </style>
+  
+.logo {
+  width: 220px;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  animation: fadeIn 1s ease-in-out;
+}
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }ْ
+}
 </head>
 
 <body>
 
-<div class="header">🚗 MotorX</div>
+<img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png" class="logo">
 
 <!-- 🔐 تسجيل دخول -->
 <div id="authBox">
