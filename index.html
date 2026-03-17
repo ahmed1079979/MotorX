@@ -56,6 +56,7 @@
     <option value="غسيل">🚿 غسيل</option>
     <option value="صيانة">🔧 صيانة</option>
     <option value="طوارئ">🚨 طوارئ</option>
+    <div id="shopsList" style="margin-top:20px;"></div>
   </select><br><br>
 
   <input id="shopPhone" placeholder="رقم الواتساب"><br><br>
@@ -96,19 +97,31 @@ let shops = [
 
 // 👇 تحتها مباشرة دالة الطلب
 function order(service) {
-  let shop = shops.find(s => s.service === service);
+  let list = shops.filter(s => s.service === service);
 
-  let locationText = userLocation
-    ? `📍 https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}`
-    : "📍 الموقع غير متوفر";
+  let container = document.getElementById("shopsList");
+  container.innerHTML = "";
 
-  let message = `🚗 MotorX
-طلب خدمة: ${service}
-${locationText}`;
+  if (list.length === 0) {
+    container.innerHTML = "❌ لا يوجد محلات حالياً";
+    return;
+  }
 
-  let url = `https://wa.me/${shop.phone}?text=${encodeURIComponent(message)}`;
+  list.forEach(shop => {
+    let btn = document.createElement("div");
 
-  window.open(url, "_blank");
+    btn.innerText = "🏪 " + shop.name;
+    btn.style.background = "#222";
+    btn.style.color = "white";
+    btn.style.padding = "10px";
+    btn.style.margin = "10px 0";
+    btn.style.borderRadius = "10px";
+    btn.style.cursor = "pointer";
+
+    btn.onclick = () => sendToWhatsApp(shop, service);
+
+    container.appendChild(btn);
+  });
 }
 
   function initMap() {
