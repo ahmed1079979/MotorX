@@ -13,43 +13,30 @@ body {
   font-family: 'Cairo', sans-serif;
   background: linear-gradient(180deg, #0a0a0a, #000);
   color: white;
-}
-
-/* 🔥 Header */
-.header {
   text-align: center;
-  padding: 20px;
 }
 
 .logo {
   width: 110px;
+  margin-top: 20px;
 }
 
-/* 💎 كروت */
 .card {
   background: rgba(255,255,255,0.05);
   backdrop-filter: blur(10px);
   margin: 15px;
-  padding: 18px;
+  padding: 20px;
   border-radius: 18px;
-  transition: 0.3s;
 }
 
-.card:hover {
-  transform: scale(1.03);
-}
-
-/* 🟢 زر */
 .btn {
   background: linear-gradient(45deg, red, orange);
   padding: 12px;
   border-radius: 12px;
-  text-align: center;
   margin-top: 10px;
   cursor: pointer;
 }
 
-/* ✨ Input */
 input {
   width: 90%;
   padding: 12px;
@@ -57,52 +44,189 @@ input {
   border-radius: 10px;
   border: none;
 }
-
-/* 🔥 عنوان */
-h3 {
-  margin: 10px 0;
-}
 </style>
-
 </head>
 
 <body>
 
-<div class="header">
-  <img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png" class="logo">
+<img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png" class="logo">
+
+<!-- 🔐 تسجيل -->
+<div id="auth">
+
+  <div class="card">
+    <h3>🔐 تسجيل دخول</h3>
+    <input id="loginUser" placeholder="اسم المستخدم">
+    <input id="loginPass" type="password" placeholder="كلمة المرور">
+    <div class="btn" onclick="login()">دخول</div>
+  </div>
+
+  <div class="card">
+    <h3>🆕 إنشاء حساب</h3>
+    <input id="regUser" placeholder="اسم المستخدم">
+    <input id="regPass" type="password" placeholder="كلمة المرور">
+    <div class="btn" onclick="register()">تسجيل</div>
+  </div>
+
 </div>
 
-<!-- 🏪 تسجيل محل -->
-<div class="card">
-  <h3>🏪 إضافة محل</h3>
-  <input placeholder="اسم المحل">
-  <input placeholder="الخدمة">
-  <input placeholder="السعر">
-  <div class="btn">إضافة</div>
+<!-- 🚀 التطبيق -->
+<div id="app" style="display:none;">
+
+  <div class="btn" onclick="logout()">🚪 تسجيل خروج</div>
+
+  <!-- 🏪 إضافة محل -->
+  <div class="card">
+    <h3>🏪 محلاتي</h3>
+    <input id="shopName" placeholder="اسم المحل">
+    <input id="shopService" placeholder="الخدمة">
+    <input id="shopPrice" placeholder="السعر">
+    <div class="btn" onclick="addShop()">إضافة محل</div>
+    <div id="myShops"></div>
+  </div>
+
+  <!-- ⭐ تقييم -->
+  <div class="card">
+    <h3>⭐ تقييم المحلات</h3>
+    <input id="rateShopName" placeholder="اسم المحل">
+    <input id="rateValue" placeholder="من 5">
+    <div class="btn" onclick="rateShop()">إرسال</div>
+  </div>
+
+  <!-- 🚗 طلب -->
+  <div class="card">
+    <h3>🚗 طلب خدمة</h3>
+    <input id="orderService" placeholder="نوع الخدمة">
+    <div class="btn" onclick="makeOrder()">اطلب</div>
+  </div>
+
+  <!-- 📊 لوحة التحكم -->
+  <div class="card">
+    <h3>📊 الطلبات</h3>
+    <div id="orders"></div>
+  </div>
+
 </div>
 
-<!-- 🚗 الخدمات -->
-<div class="card">
-  <h3>🚗 الخدمات</h3>
-  <div class="btn">🧼 غسيل</div>
-  <div class="btn">🔧 صيانة</div>
-  <div class="btn">🚨 طوارئ</div>
-</div>
+<script>
 
-<!-- ⭐ تقييم -->
-<div class="card">
-  <h3>⭐ تقييم</h3>
-  <input placeholder="اسم المحل">
-  <input placeholder="التقييم">
-  <div class="btn">إرسال</div>
-</div>
+// تسجيل
+function register(){
+  let user = regUser.value;
+  let pass = regPass.value;
 
-<!-- 🤖 AI -->
-<div class="card">
-  <h3>🤖 تشخيص</h3>
-  <input placeholder="وش مشكلة سيارتك؟">
-  <div class="btn">تشخيص</div>
-</div>
+  if(localStorage.getItem(user)){
+    alert("⚠️ موجود");
+    return;
+  }
+
+  localStorage.setItem(user, pass);
+  alert("✅ تم");
+}
+
+// دخول
+function login(){
+  let user = loginUser.value;
+  let pass = loginPass.value;
+
+  if(localStorage.getItem(user) === pass){
+    localStorage.setItem("currentUser", user);
+    showApp();
+  } else alert("❌ خطأ");
+}
+
+// خروج
+function logout(){
+  localStorage.removeItem("currentUser");
+  location.reload();
+}
+
+function showApp(){
+  auth.style.display = "none";
+  app.style.display = "block";
+  displayMyShops();
+  displayOrders();
+}
+
+if(localStorage.getItem("currentUser")) showApp();
+
+// 🏪 إضافة محل (مربوط بالمستخدم)
+function addShop(){
+  let shops = JSON.parse(localStorage.getItem("shops")||"[]");
+
+  let newShop = {
+    name: shopName.value,
+    service: shopService.value,
+    price: shopPrice.value,
+    owner: localStorage.getItem("currentUser"),
+    rating: 0
+  };
+
+  shops.push(newShop);
+  localStorage.setItem("shops", JSON.stringify(shops));
+
+  displayMyShops();
+}
+
+// عرض محلاتي فقط
+function displayMyShops(){
+  let user = localStorage.getItem("currentUser");
+  let shops = JSON.parse(localStorage.getItem("shops")||"[]");
+
+  let html = "";
+
+  shops.filter(s => s.owner === user).forEach(s => {
+    html += `<div class="card">
+      ${s.name} - ${s.service} - 💰${s.price}
+      ⭐ ${s.rating}
+    </div>`;
+  });
+
+  myShops.innerHTML = html;
+}
+
+// ⭐ تقييم
+function rateShop(){
+  let shops = JSON.parse(localStorage.getItem("shops")||"[]");
+
+  shops.forEach(s=>{
+    if(s.name === rateShopName.value){
+      s.rating = rateValue.value;
+    }
+  });
+
+  localStorage.setItem("shops", JSON.stringify(shops));
+  displayMyShops();
+}
+
+// 🚗 طلب خدمة
+function makeOrder(){
+  let orders = JSON.parse(localStorage.getItem("orders")||"[]");
+
+  orders.push({
+    user: localStorage.getItem("currentUser"),
+    service: orderService.value
+  });
+
+  localStorage.setItem("orders", JSON.stringify(orders));
+  displayOrders();
+}
+
+// 📊 عرض الطلبات
+function displayOrders(){
+  let orders = JSON.parse(localStorage.getItem("orders")||"[]");
+
+  let html = "";
+  orders.forEach(o=>{
+    html += `<div class="card">
+      👤 ${o.user} - 🔧 ${o.service}
+    </div>`;
+  });
+
+  document.getElementById("orders").innerHTML = html;
+}
+
+</script>
 
 </body>
 </html>
