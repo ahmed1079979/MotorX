@@ -5,260 +5,159 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MotorX</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-
 <style>
 body {
   margin: 0;
-  font-family: 'Cairo', sans-serif;
-  background: linear-gradient(180deg, #0f0f0f, #000);
+  font-family: Arial;
+  background: #000;
   color: white;
   text-align: center;
 }
 
-/* 🔥 الهيدر */
-.header {
-  padding: 20px;
-  font-size: 26px;
-  font-weight: bold;
+/* الشعار */
+.logo {
+  width: 120px;
+  margin: 20px auto;
+  display: block;
 }
 
-/* 🟢 كارد */
-.card {
-  background: #1a1a1a;
-  margin: 10px auto;
-  width: 90%;
-  padding: 15px;
-  border-radius: 15px;
-  transition: 0.3s;
-  cursor: pointer;
+/* صندوق */
+.container {
+  max-width: 400px;
+  margin: auto;
 }
 
-.card:hover {
-  transform: scale(1.03);
-  background: #222;
-}
-
-/* ✨ زر */
+/* الأزرار */
 .btn {
-  background: linear-gradient(45deg, #00c853, #00ff88);
-  padding: 12px;
-  border-radius: 10px;
-  margin: 10px auto;
-  width: 60%;
+  width: 100%;
+  padding: 15px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 12px;
+  background: #111;
+  color: white;
+  font-size: 16px;
   cursor: pointer;
-  color: black;
-  font-weight: bold;
 }
 
-/* 🔐 فورم */
-input, select {
-  width: 85%;
+.btn:hover {
+  background: red;
+}
+
+/* الفورم */
+.form {
+  display: none;
+  margin-top: 20px;
+}
+
+input {
+  width: 90%;
   padding: 12px;
-  margin: 8px;
-  border-radius: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
   border: none;
 }
 
-/* 💎 كروت الخدمات */
-.service {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* الصفحة الرئيسية */
+.dashboard {
+  display: none;
+}
+
+.card {
+  background: #111;
   padding: 15px;
-  font-size: 18px;
+  border-radius: 12px;
+  margin: 10px;
 }
-
-/* 🚗 أيقونات */
-.icon {
-  font-size: 22px;
-}
-<head>
-<style>
-
-.logo {
-  width: 120px !important;
-  display: block;
-  margin: 20px auto;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
 </style>
-</head>
 
+</head>
 <body>
 
-<img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png"
-     class="logo"
-     style="width:150px;">
+<img src="https://raw.githubusercontent.com/ahmed1079979/MotorX/main/logo.png" class="logo">
 
-<!-- 🔐 تسجيل دخول -->
-<div id="authBox">
+<div class="container">
 
-  <div class="card">
-    <h3>🔐 تسجيل الدخول</h3>
-    <input id="loginPhone" placeholder="رقمك">
-    <input id="loginPass" type="password" placeholder="كلمة المرور">
-    <div class="btn" onclick="login()">دخول</div>
-  </div>
-
-  <div class="card">
-    <h3>🆕 إنشاء حساب</h3>
-    <input id="regPhone" placeholder="رقمك">
-    <input id="regPass" type="password" placeholder="كلمة المرور">
-    <div class="btn" onclick="register()">تسجيل</div>
-  </div>
-
+<!-- الصفحة الرئيسية -->
+<div id="home">
+  <button class="btn" onclick="showLogin()">تسجيل دخول</button>
+  <button class="btn" onclick="showRegister()">إنشاء حساب</button>
 </div>
 
-<!-- 🧠 التطبيق -->
-<div id="app" style="display:none;">
+<!-- تسجيل دخول -->
+<div id="login" class="form">
+  <h3>تسجيل دخول</h3>
+  <input type="text" id="loginUser" placeholder="اسم المستخدم">
+  <input type="password" id="loginPass" placeholder="كلمة المرور">
+  <button class="btn" onclick="login()">دخول</button>
+</div>
 
-  <div class="card" onclick="logout()">🚪 تسجيل خروج</div>
+<!-- إنشاء حساب -->
+<div id="register" class="form">
+  <h3>إنشاء حساب</h3>
+  <input type="text" id="regUser" placeholder="اسم المستخدم">
+  <input type="password" id="regPass" placeholder="كلمة المرور">
+  <button class="btn" onclick="register()">تسجيل</button>
+</div>
 
-  <div class="card" onclick="showRegister()">📋 تسجيل محل</div>
+<!-- داخل التطبيق -->
+<div id="dashboard" class="dashboard">
+  <h2>🚗 MotorX</h2>
 
-  <div id="registerBox" style="display:none;">
-    <div class="card">
-      <input id="shopName" placeholder="اسم المحل">
-      <select id="shopService">
-        <option value="غسيل">🧼 غسيل</option>
-        <option value="صيانة">🔧 صيانة</option>
-        <option value="طوارئ">🚨 طوارئ</option>
-      </select>
-      <input id="shopPhone" placeholder="رقم الواتساب">
-      <div class="btn" onclick="saveShop()">💾 حفظ</div>
-    </div>
-  </div>
+  <div class="card">🛠️ خدمات السيارات</div>
+  <div class="card">🚿 غسيل سيارات</div>
+  <div class="card">🔧 صيانة</div>
 
-  <!-- 🚀 الخدمات -->
-  <div class="card service" onclick="order('غسيل')">
-    🧼 غسيل سيارات <span class="icon">➜</span>
-  </div>
-
-  <div class="card service" onclick="order('صيانة')">
-    🔧 صيانة <span class="icon">➜</span>
-  </div>
-
-  <div class="card service" onclick="order('طوارئ')">
-    🚨 طوارئ <span class="icon">➜</span>
-  </div>
-
-  <!-- 🏪 المحلات -->
-  <div id="shopsList"></div>
+  <button class="btn" onclick="logout()">تسجيل خروج</button>
+</div>
 
 </div>
 
 <script>
+// عرض الصفحات
+function showLogin(){
+  home.style.display = "none";
+  login.style.display = "block";
+}
 
-// المستخدم
-let currentUser = JSON.parse(localStorage.getItem("currentUser"));
+function showRegister(){
+  home.style.display = "none";
+  register.style.display = "block";
+}
 
-if (currentUser) showApp();
-
-// تسجيل
-function register() {
-  let phone = regPhone.value;
+// تسجيل حساب
+function register(){
+  let user = regUser.value;
   let pass = regPass.value;
 
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  if (users.some(u => u.phone === phone)) {
-    alert("⚠️ الحساب موجود");
+  if(localStorage.getItem(user)){
+    alert("الحساب موجود!");
     return;
   }
 
-  users.push({ phone, pass });
-  localStorage.setItem("users", JSON.stringify(users));
-
-  alert("✅ تم إنشاء الحساب");
+  localStorage.setItem(user, pass);
+  alert("تم إنشاء الحساب");
 }
 
-// دخول
-function login() {
-  let phone = loginPhone.value;
+// تسجيل دخول
+function login(){
+  let user = loginUser.value;
   let pass = loginPass.value;
 
-  let users = JSON.parse(localStorage.getItem("users")) || [];
-
-  let user = users.find(u => u.phone === phone && u.pass === pass);
-
-  if (!user) return alert("❌ خطأ");
-
-  localStorage.setItem("currentUser", JSON.stringify(user));
-  showApp();
-}
-
-// خروج
-function logout() {
-  localStorage.removeItem("currentUser");
-  location.reload();
-}
-
-// عرض التطبيق
-function showApp() {
-  authBox.style.display = "none";
-  app.style.display = "block";
-}
-
-// تسجيل محل
-function showRegister() {
-  registerBox.style.display = registerBox.style.display === "none" ? "block" : "none";
-}
-
-// المحلات
-let shops = JSON.parse(localStorage.getItem("shops")) || [];
-
-// حفظ محل
-function saveShop() {
-  let name = shopName.value;
-  let service = shopService.value;
-  let phone = shopPhone.value;
-
-  if (shops.some(s => s.phone === phone)) {
-    alert("⚠️ الرقم موجود");
-    return;
+  if(localStorage.getItem(user) === pass){
+    login.style.display = "none";
+    dashboard.style.display = "block";
+  } else {
+    alert("خطأ في البيانات");
   }
-
-  shops.push({ name, service, phone });
-
-  localStorage.setItem("shops", JSON.stringify(shops));
-
-  alert("✅ تم الحفظ");
 }
 
-// عرض
-function order(service) {
-  let list = shops.filter(s => s.service === service);
-
-  shopsList.innerHTML = "";
-
-  list.forEach(shop => {
-    let div = document.createElement("div");
-
-    div.className = "card";
-    div.innerText = "🏪 " + shop.name;
-
-    div.onclick = () => {
-      window.open(`https://wa.me/${shop.phone}`);
-    };
-
-    shopsList.appendChild(div);
-  });
+// تسجيل خروج
+function logout(){
+  dashboard.style.display = "none";
+  home.style.display = "block";
 }
-
 </script>
-
 
 
 <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcx2dw0Y-2EXMKpgyCiLe0uPkitOh9rT4&callback=initMap"></script>
