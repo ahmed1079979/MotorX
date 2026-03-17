@@ -55,9 +55,29 @@
 <div id="map"></div>
 
 <script>
-  function order(service) {
-    alert("تم طلب خدمة: " + service);
-  }
+ function order(service) {
+  const box = document.createElement("div");
+
+  box.style.position = "fixed";
+  box.style.bottom = "20px";
+  box.style.left = "50%";
+  box.style.transform = "translateX(-50%)";
+  box.style.background = "#00c853";
+  box.style.color = "white";
+  box.style.padding = "15px 25px";
+  box.style.borderRadius = "10px";
+  box.style.fontSize = "16px";
+  box.style.boxShadow = "0 5px 20px rgba(0,0,0,0.3)";
+  box.innerText = "✅ تم طلب: " + service;
+
+  document.body.appendChild(box);
+
+  setTimeout(() => {
+    box.remove();
+  }, 3000);
+
+  localStorage.setItem("lastOrder", service);
+}
 
   function initMap() {
     var location = { lat: 24.4539, lng: 54.3773 };
