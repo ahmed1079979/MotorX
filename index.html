@@ -54,13 +54,12 @@ button {
 
 <h1>🚗 MotorX</h1>
 
-<!-- زر تسجيل محل -->
+<!-- تسجيل محل -->
 <div class="btn" onclick="showRegister()">📋 تسجيل محل</div>
 
-<!-- فورم التسجيل -->
 <div id="registerBox" style="display:none;">
   <input id="shopName" placeholder="اسم المحل"><br>
-  
+
   <select id="shopService">
     <option value="غسيل">🧼 غسيل سيارة</option>
     <option value="صيانة">🔧 صيانة</option>
@@ -72,7 +71,7 @@ button {
   <button onclick="saveShop()">💾 حفظ</button>
 </div>
 
-<!-- الأزرار -->
+<!-- الخدمات -->
 <div class="btn" onclick="order('غسيل')">🧼 غسيل سيارة</div>
 <div class="btn" onclick="order('صيانة')">🔧 صيانة</div>
 <div class="btn" onclick="order('طوارئ')">🚨 طوارئ</div>
@@ -95,18 +94,17 @@ function getLocation() {
     });
   }
 }
-
 window.onload = getLocation;
 
 
-// 🔥 قائمة المحلات الأساسية
+// 🔥 قائمة أساسية
 let shops = [
   { name: "غسيل سريع", service: "غسيل", phone: "971500000001" },
   { name: "كراج السرعة", service: "صيانة", phone: "971500000002" },
   { name: "بنشر الطوارئ", service: "طوارئ", phone: "971500000003" }
 ];
 
-// تحميل المحلات من التخزين
+// تحميل المحلات
 let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
 shops = shops.concat(savedShops);
 
@@ -118,30 +116,36 @@ function showRegister() {
 }
 
 
-// 💾 حفظ محل
+// 💾 حفظ محل (مع منع التكرار)
 function saveShop() {
-  let name = document.getElementById("shopName").value;
+  let name = document.getElementById("shopName").value.trim();
   let service = document.getElementById("shopService").value;
-  let phone = document.getElementById("shopPhone").value;
+  let phone = document.getElementById("shopPhone").value.trim();
 
   if (!name || !phone) {
     alert("❌ املأ كل البيانات");
     return;
   }
 
+  let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
+
+  // ❌ منع التكرار
+  let exists = savedShops.some(s => s.phone === phone);
+
+  if (exists) {
+    alert("⚠️ هذا الرقم مسجل مسبقاً!");
+    return;
+  }
+
   let newShop = { name, service, phone };
 
-  // حفظ
-  let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
   savedShops.push(newShop);
   localStorage.setItem("shops", JSON.stringify(savedShops));
 
-  // إضافة مباشرة
   shops.push(newShop);
 
   alert("✅ تم تسجيل المحل");
 
-  // تنظيف
   document.getElementById("shopName").value = "";
   document.getElementById("shopPhone").value = "";
 }
