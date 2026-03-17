@@ -55,6 +55,7 @@
 <div id="map"></div>
 
 <script>
+  
  function order(service) {
   const box = document.createElement("div");
 
@@ -68,7 +69,12 @@
   box.style.borderRadius = "10px";
   box.style.fontSize = "16px";
   box.style.boxShadow = "0 5px 20px rgba(0,0,0,0.3)";
-  box.innerText = "✅ تم طلب: " + service;
+
+  let locationText = userLocation
+    ? `📍 ${userLocation.lat}, ${userLocation.lng}`
+    : "📍 جاري تحديد الموقع...";
+
+  box.innerText = `✅ تم طلب: ${service}\n${locationText}`;
 
   document.body.appendChild(box);
 
