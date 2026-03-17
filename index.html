@@ -94,7 +94,10 @@ let shops = [
   { name: "كراج السرعة", service: "صيانة", phone: "971500000002" },
   { name: "بنشر الطوارئ", service: "طوارئ", phone: "971500000003" }
 ];
-
+  
+let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
+shops = shops.concat(savedShops);
+  
 // 👇 تحتها مباشرة دالة الطلب
 function order(service) {
   let list = shops.filter(s => s.service === service);
@@ -107,6 +110,37 @@ function order(service) {
     return;
   }
 
+  list.forEach(shop => {
+    let btn = document.createElement("div");
+
+    btn.innerText = "🏪 " + shop.name;
+    btn.style.background = "#222";
+    btn.style.color = "white";
+    btn.style.padding = "10px";
+    btn.style.margin = "10px 0";
+    btn.style.borderRadius = "10px";
+    btn.style.cursor = "pointer";
+
+    btn.onclick = () => sendWhatsApp(shop, service);
+
+    container.appendChild(btn);
+  });
+}
+
+  function sendWhatsApp(shop, service) {
+  let locationText = userLocation
+    ? `📍 https://www.google.com/maps?q=${userLocation.lat},${userLocation.lng}`
+    : "📍 الموقع غير متوفر";
+
+  let message = `🚗 MotorX
+طلب خدمة: ${service}
+${locationText}`;
+
+  let url = `https://wa.me/${shop.phone}?text=${encodeURIComponent(message)}`;
+
+  window.open(url, "_blank");
+}
+  
   list.forEach(shop => {
     let btn = document.createElement("div");
 
@@ -143,9 +177,6 @@ function order(service) {
 }
 
 // تحميل المحلات من التخزين
-let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
-shops = shops.concat(savedShops);
-
 function saveShop() {
   let name = document.getElementById("shopName").value;
   let service = document.getElementById("shopService").value;
@@ -153,12 +184,19 @@ function saveShop() {
 
   let newShop = { name, service, phone };
 
+  // نحفظ في localStorage
+  let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
   savedShops.push(newShop);
   localStorage.setItem("shops", JSON.stringify(savedShops));
 
+  // 🔥 نضيفه مباشرة للقائمة بدون تحديث الصفحة
+  shops.push(newShop);
+
   alert("✅ تم تسجيل المحل!");
 
-  location.reload();
+  // تنظيف الفورم
+  document.getElementById("shopName").value = "";
+  document.getElementById("shopPhone").value = "";
 }
   
 </script>
