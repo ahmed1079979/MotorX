@@ -46,7 +46,23 @@
 <body>
 
 <h1>🚗 MotorX</h1>
+  
+<div class="btn" onclick="showRegister()">🏪 تسجيل محل</div>
+  <div id="registerBox" style="display:none; margin-top:20px;">
 
+  <input id="shopName" placeholder="اسم المحل"><br><br>
+
+  <select id="shopService">
+    <option value="غسيل">🚿 غسيل</option>
+    <option value="صيانة">🔧 صيانة</option>
+    <option value="طوارئ">🚨 طوارئ</option>
+  </select><br><br>
+
+  <input id="shopPhone" placeholder="رقم الواتساب"><br><br>
+
+  <button onclick="saveShop()">💾 حفظ</button>
+
+</div>
 <div class="btn" onclick="order('غسيل')">🧼 غسيل سيارة</div>
 <div class="btn" onclick="order('صيانة')">🔧 صيانة</div>
 <div class="btn" onclick="order('طوارئ')">🚨 طوارئ</div>
@@ -108,6 +124,30 @@ ${locationText}`;
       map: map,
     });
   }
+
+  function showRegister() {
+  document.getElementById("registerBox").style.display = "block";
+}
+
+// تحميل المحلات من التخزين
+let savedShops = JSON.parse(localStorage.getItem("shops")) || [];
+shops = shops.concat(savedShops);
+
+function saveShop() {
+  let name = document.getElementById("shopName").value;
+  let service = document.getElementById("shopService").value;
+  let phone = document.getElementById("shopPhone").value;
+
+  let newShop = { name, service, phone };
+
+  savedShops.push(newShop);
+  localStorage.setItem("shops", JSON.stringify(savedShops));
+
+  alert("✅ تم تسجيل المحل!");
+
+  location.reload();
+}
+  
 </script>
 
 <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAcx2dw0Y-2EXMKpgyCiLe0uPkitOh9rT4&callback=initMap"></script>
